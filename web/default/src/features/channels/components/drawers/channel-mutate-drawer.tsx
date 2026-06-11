@@ -913,22 +913,8 @@ export function ChannelMutateDrawer({
 
   const isSubmitting = channelMutation.isPending
 
-  const onSubmit = useCallback(
-    async (data: ChannelFormValues) => {
-
-      console.log('提交的数据', data)
-    },
-    [
-      isEditing,
-      form,
-      confirmMissingModelMappings,
-      confirmStatusCodeRisk,
-      channelMutation,
-      t,
-    ]
-  )
   // Submit handler
-  const onSubmit1 = useCallback(
+  const onSubmit = useCallback(
     async (data: ChannelFormValues) => {
       // Validate key is required when creating
       if (!isEditing && !data.key?.trim()) {
