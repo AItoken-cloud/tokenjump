@@ -913,8 +913,22 @@ export function ChannelMutateDrawer({
 
   const isSubmitting = channelMutation.isPending
 
-  // Submit handler
   const onSubmit = useCallback(
+    async (data: ChannelFormValues) => {
+
+      console.log('提交的数据', data)
+    },
+    [
+      isEditing,
+      form,
+      confirmMissingModelMappings,
+      confirmStatusCodeRisk,
+      channelMutation,
+      t,
+    ]
+  )
+  // Submit handler
+  const onSubmit1 = useCallback(
     async (data: ChannelFormValues) => {
       // Validate key is required when creating
       if (!isEditing && !data.key?.trim()) {
@@ -1669,53 +1683,37 @@ export function ChannelMutateDrawer({
                             >
                               {t('API Base URL *')}
                             </FormLabel>
-                            <Select
-                              items={[
-                                {
-                                  value: 'https://ark.cn-beijing.volces.com',
-                                  label: t('https://ark.cn-beijing.volces.com'),
-                                },
-                                {
-                                  value:
-                                    'https://ark.ap-southeast.bytepluses.com',
-                                  label: t(
-                                    'https://ark.ap-southeast.bytepluses.com'
-                                  ),
-                                },
-                                {
-                                  value: 'doubao-coding-plan',
-                                  label: t('Doubao Coding Plan'),
-                                },
-                              ]}
-                              onValueChange={field.onChange}
-                              value={
-                                field.value ||
-                                'https://ark.cn-beijing.volces.com'
-                              }
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent alignItemWithTrigger={false}>
-                                <SelectGroup>
-                                  <SelectItem value='https://ark.cn-beijing.volces.com'>
-                                    {t('https://ark.cn-beijing.volces.com')}
-                                  </SelectItem>
-                                  <SelectItem value='https://ark.ap-southeast.bytepluses.com'>
-                                    {t(
+                            <FormControl>
+                              <Combobox
+                                options={[
+                                  {
+                                    value: 'https://ark.cn-beijing.volces.com',
+                                    label: t('https://ark.cn-beijing.volces.com'),
+                                  },
+                                  {
+                                    value:
+                                      'https://ark.ap-southeast.bytepluses.com',
+                                    label: t(
                                       'https://ark.ap-southeast.bytepluses.com'
-                                    )}
-                                  </SelectItem>
-                                  <SelectItem value='doubao-coding-plan'>
-                                    {t('Doubao Coding Plan')}
-                                  </SelectItem>
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
+                                    ),
+                                  },
+                                  {
+                                    value: 'doubao-coding-plan',
+                                    label: t('Doubao Coding Plan'),
+                                  },
+                                ]}
+                                value={field.value || ''}
+                                onValueChange={field.onChange}
+                                placeholder={t(
+                                  'e.g., https://ark.cn-beijing.volces.com'
+                                )}
+                                allowCustomValue
+                              />
+                            </FormControl>
                             <FormDescription>
-                              {t('Select the API endpoint region')}
+                              {t(
+                                'Select the API endpoint region'
+                              )}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -1795,7 +1793,23 @@ export function ChannelMutateDrawer({
                         )}
                       />
                     )}
-
+                    <FormField
+                      control={form.control}
+                      name='only_base_url'
+                      render={({ field }) => (
+                        <FormItem className={sideDrawerSwitchItemClassName('border-0 min-h-8 py-0')}>
+                          <div className='flex flex-col gap-0.5'>
+                            <FormLabel>{t('Only Base Url')}</FormLabel>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value === true}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
                     <ChannelAuthSection>
                       {!isEditing && (
                         <FormField

@@ -166,10 +166,10 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                           value: 'default',
                           label: t('Default (New Frontend)'),
                         },
-                        {
-                          value: 'classic',
-                          label: t('Classic (Legacy Frontend)'),
-                        },
+                        // {
+                        //   value: 'classic',
+                        //   label: t('Classic (Legacy Frontend)'),
+                        // },
                       ]}
                       onValueChange={field.onChange}
                       value={field.value}
@@ -184,9 +184,9 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                           <SelectItem value='default'>
                             {t('Default (New Frontend)')}
                           </SelectItem>
-                          <SelectItem value='classic'>
+                          {/* <SelectItem value='classic'>
                             {t('Classic (Legacy Frontend)')}
-                          </SelectItem>
+                          </SelectItem> */}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -207,7 +207,7 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                   <FormItem>
                     <FormLabel>{t('System Name')}</FormLabel>
                     <FormControl>
-                      <Input placeholder={t('New API')} {...field} />
+                      <Input placeholder={t('Token Jump')} {...field} />
                     </FormControl>
                     <FormDescription>
                       {t('The name displayed across the application')}
@@ -265,7 +265,7 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                     <FormControl>
                       <Textarea
                         placeholder={t(
-                          '© 2025 Your Company. All rights reserved.'
+                          '© 2026 Your Company. All rights reserved.'
                         )}
                         rows={4}
                         {...field}
@@ -313,7 +313,7 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                       <FormLabel>{t('Home Page Content')}</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder={t('Welcome to our New API...')}
+                          placeholder={t('Welcome to our Token Jump...')}
                           rows={6}
                           {...field}
                         />

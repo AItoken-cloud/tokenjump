@@ -2700,6 +2700,7 @@
     "Online": "オンライン",
     "Online payment is not enabled. Please contact the administrator.": "オンライン決済が有効になっていません。管理者にお問い合わせください。",
     "Online topup is not enabled. Please use redemption code or contact administrator.": "オンラインチャージは有効になっていません。引き換えコードを使用するか、管理者に連絡してください。",
+    "Only Base Url": "Only Base Url",
     "Only allow specific email domains": "特定のEメール ドメインのみを許可する",
     "Only available for admins. When enabled, you will receive a summary notification via your selected method when the scheduled model check detects upstream model changes or check failures.": "管理者のみ利用可能です。有効にすると、スケジュールされたモデルチェックでアップストリームモデルの変更やチェック失敗が検出された際に、選択した方法で概要通知を受け取ります。",
     "Only configured combinations are overridden. All other calls keep the token group base ratio.": "設定済みの組み合わせだけが上書きされます。他の呼び出しはトークングループの基本倍率を維持します。",

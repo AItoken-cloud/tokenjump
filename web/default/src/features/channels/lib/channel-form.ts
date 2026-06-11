@@ -148,6 +148,7 @@ export const channelFormSchema = z
         isOptionalStatusCodeMapping,
         'Status code mapping must use valid HTTP status codes'
       ),
+    only_base_url: z.boolean().optional(),
     tag: z.string().optional(),
     remark: z
       .string()
@@ -282,6 +283,7 @@ export const CHANNEL_FORM_DEFAULT_VALUES: ChannelFormValues = {
   auto_ban: 1,
   status: CHANNEL_STATUS.ENABLED,
   status_code_mapping: '',
+  only_base_url: false,
   tag: '',
   remark: '',
   setting: '',
@@ -415,6 +417,7 @@ export function transformChannelToFormDefaults(
     auto_ban: channel.auto_ban ?? 1,
     status: channel.status,
     status_code_mapping: channel.status_code_mapping || '',
+    only_base_url: false,
     tag: channel.tag || '',
     remark: channel.remark || '',
     setting: channel.setting || '',
