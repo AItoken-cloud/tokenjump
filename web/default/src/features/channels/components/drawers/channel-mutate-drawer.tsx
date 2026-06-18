@@ -1807,6 +1807,17 @@ export function ChannelMutateDrawer({
                               <input
                                 type='radio'
                                 name='custom_adaptor_id'
+                                value='0'
+                                checked={field.value === 0}
+                                onChange={() => field.onChange(0)}
+                                className='accent-primary'
+                              />
+                              <span className='text-sm'>{t('None')}</span>
+                            </label>
+                            <label className='flex cursor-pointer items-center gap-2'>
+                              <input
+                                type='radio'
+                                name='custom_adaptor_id'
                                 value='1'
                                 checked={field.value === 1}
                                 onChange={() => field.onChange(1)}
