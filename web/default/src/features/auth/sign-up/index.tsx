@@ -16,7 +16,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useStatus } from '@/hooks/use-status'
 import { AuthLayout } from '../auth-layout'
@@ -34,16 +33,6 @@ export function SignUp() {
           <h2 className='text-center text-2xl font-semibold tracking-tight sm:text-left'>
             {t('Create an account')}
           </h2>
-          <p className='text-muted-foreground text-left text-sm sm:text-base'>
-            {t('Already have an account?')}{' '}
-            <Link
-              to='/sign-in'
-              className='hover:text-primary font-medium underline underline-offset-4'
-            >
-              {t('Sign in')}
-            </Link>
-            .
-          </p>
         </div>
 
         <SignUpForm />

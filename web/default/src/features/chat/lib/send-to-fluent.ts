@@ -27,7 +27,7 @@ export function sendToFluent(apiKey: string, serverAddress?: string): boolean {
   }
 
   const payload = {
-    id: 'new-api',
+    id: 'TokenJump',
     baseUrl: serverAddress || window.location.origin,
     apiKey: `sk-${apiKey}`,
   }

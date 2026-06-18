@@ -20,6 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 import type { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Link } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -371,6 +372,18 @@ export function SignUpForm({
           {isLoading ? <Loader2 className='h-4 w-4 animate-spin' /> : null}
           {t('Create account')}
         </Button>
+
+        {/* Sign In Link */}
+        <p className='text-muted-foreground text-left text-sm sm:text-base'>
+          {t('Already have an account?')}{' '}
+          <Link
+            to='/sign-in'
+            className='hover:text-primary font-medium underline underline-offset-4'
+          >
+            {t('Sign in')}
+          </Link>
+          .
+        </p>
 
         {oauthRegisterEnabled && (
           <OAuthProviders

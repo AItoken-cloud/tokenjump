@@ -388,6 +388,18 @@ export function UserAuthForm({
               {t('Sign in')}
             </Button>
 
+            {/* Register Link */}
+            <p className='text-muted-foreground text-left text-sm sm:text-base'>
+              {t("Don't have an account?")}{' '}
+              <Link
+                to='/sign-up'
+                className='hover:text-primary font-medium underline underline-offset-4'
+              >
+                {t('Sign up')}
+              </Link>
+              .
+            </p>
+
             {/* Turnstile */}
             {isTurnstileEnabled && (
               <div className='mt-2'>
