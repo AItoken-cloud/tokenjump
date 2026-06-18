@@ -149,6 +149,7 @@ export const channelFormSchema = z
         'Status code mapping must use valid HTTP status codes'
       ),
     only_base_url: z.boolean().optional(),
+    custom_adaptor_id: z.number().optional(),
     tag: z.string().optional(),
     remark: z
       .string()
@@ -284,6 +285,7 @@ export const CHANNEL_FORM_DEFAULT_VALUES: ChannelFormValues = {
   status: CHANNEL_STATUS.ENABLED,
   status_code_mapping: '',
   only_base_url: false,
+  custom_adaptor_id: 0,
   tag: '',
   remark: '',
   setting: '',
@@ -418,6 +420,7 @@ export function transformChannelToFormDefaults(
     status: channel.status,
     status_code_mapping: channel.status_code_mapping || '',
     only_base_url: channel.only_base_url ?? false,
+    custom_adaptor_id: channel.custom_adaptor_id ?? 0,
     tag: channel.tag || '',
     remark: channel.remark || '',
     setting: channel.setting || '',
@@ -595,6 +598,7 @@ export function transformFormDataToCreatePayload(formData: ChannelFormValues): {
     type: formData.type,
     base_url: normalizeBaseUrl(formData.base_url) || null,
     only_base_url: formData.only_base_url === true,
+    custom_adaptor_id: formData.custom_adaptor_id || 0,
     key: formData.key,
     openai_organization: formData.openai_organization || null,
     models: formData.models,
@@ -645,6 +649,7 @@ export function transformFormDataToUpdatePayload(
     type: formData.type,
     base_url: normalizeBaseUrl(formData.base_url) || null,
     only_base_url: formData.only_base_url === true,
+    custom_adaptor_id: formData.custom_adaptor_id || 0,
     openai_organization: formData.openai_organization || null,
     models: formData.models,
     group: formatGroups(formData.group),

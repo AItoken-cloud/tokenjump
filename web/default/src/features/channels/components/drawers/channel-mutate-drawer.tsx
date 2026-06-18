@@ -1796,6 +1796,51 @@ export function ChannelMutateDrawer({
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name='custom_adaptor_id'
+                      render={({ field }) => (
+                        <FormItem className='space-y-3'>
+                          <FormLabel>{t('Custom Adaptor')}</FormLabel>
+                          <div className='flex flex-col gap-2'>
+                            <label className='flex cursor-pointer items-center gap-2'>
+                              <input
+                                type='radio'
+                                name='custom_adaptor_id'
+                                value='1'
+                                checked={field.value === 1}
+                                onChange={() => field.onChange(1)}
+                                className='accent-primary'
+                              />
+                              <span className='text-sm'>{t('JD Multi-modal Video')}</span>
+                            </label>
+                            <label className='flex cursor-pointer items-center gap-2'>
+                              <input
+                                type='radio'
+                                name='custom_adaptor_id'
+                                value='2'
+                                checked={field.value === 2}
+                                onChange={() => field.onChange(2)}
+                                className='accent-primary'
+                              />
+                              <span className='text-sm'>{t('JD Text to Video')}</span>
+                            </label>
+                            <label className='flex cursor-pointer items-center gap-2'>
+                              <input
+                                type='radio'
+                                name='custom_adaptor_id'
+                                value='3'
+                                checked={field.value === 3}
+                                onChange={() => field.onChange(3)}
+                                className='accent-primary'
+                              />
+                              <span className='text-sm'>{t('JD Image to Video')}</span>
+                            </label>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <ChannelAuthSection>
                       {!isEditing && (
                         <FormField
