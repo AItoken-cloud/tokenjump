@@ -38,6 +38,7 @@ const (
 	ContextKeyChannelMultiKeyIndex     ContextKey = "channel_multi_key_index"
 	ContextKeyChannelKey               ContextKey = "channel_key"
 	ContextKeyChannelOnlyBaseUrl       ContextKey = "only_base_url"
+	ContextKeyChannelCustomAdaptorId   ContextKey = "custom_adaptor_id"
 
 	ContextKeyAutoGroup           ContextKey = "auto_group"
 	ContextKeyAutoGroupIndex      ContextKey = "auto_group_index"

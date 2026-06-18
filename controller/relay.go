@@ -446,7 +446,7 @@ func RelayMidjourney(c *gin.Context) {
 func RelayNotImplemented(c *gin.Context) {
 	err := types.OpenAIError{
 		Message: "API not implemented",
-		Type:    "new_api_error",
+		Type:    "tokenjump_error",
 		Param:   "",
 		Code:    "api_not_implemented",
 	}
@@ -599,6 +599,13 @@ func RelayTask(c *gin.Context) {
 
 	if taskErr != nil {
 		respondTaskError(c, taskErr)
+	}
+}
+
+func RelayCancelTask(c *gin.Context) {
+	taskErr := relay.RelayCancelTaskSubmit(c)
+	if taskErr != nil {
+		c.JSON(taskErr.StatusCode, taskErr)
 	}
 }
 

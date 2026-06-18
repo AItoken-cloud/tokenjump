@@ -44,14 +44,15 @@ func updateVideoTaskAll(ctx context.Context, platform constant.TaskPlatform, cha
 		}
 		return fmt.Errorf("CacheGetChannel failed: %w", err)
 	}
-	adaptor := relay.GetTaskAdaptor(platform)
+	adaptor := relay.GetTaskAdaptor(platform, cacheGetChannel.GetCustomAdaptorId())
 	if adaptor == nil {
 		return fmt.Errorf("video adaptor not found")
 	}
 	info := &relaycommon.RelayInfo{}
 	info.ChannelMeta = &relaycommon.ChannelMeta{
-		ChannelBaseUrl:     cacheGetChannel.GetBaseURL(),
-		ChannelOnlyBaseUrl: cacheGetChannel.GetOnlyBaseUrl(),
+		ChannelBaseUrl:         cacheGetChannel.GetBaseURL(),
+		ChannelOnlyBaseUrl:     cacheGetChannel.GetOnlyBaseUrl(),
+		ChannelCustomAdaptorId: cacheGetChannel.GetCustomAdaptorId(),
 	}
 	info.ApiKey = cacheGetChannel.Key
 	adaptor.Init(info)

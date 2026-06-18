@@ -12,6 +12,7 @@ import (
 	"github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/constant"
 	"github.com/QuantumNous/new-api/dto"
+	"github.com/QuantumNous/new-api/logger"
 	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/relay/channel"
 	"github.com/QuantumNous/new-api/relay/channel/task/taskcommon"
@@ -99,11 +100,13 @@ func ResolveOriginTask(c *gin.Context, info *relaycommon.RelayInfo) *dto.TaskErr
 		common.SetContextKey(c, constant.ContextKeyChannelBaseUrl, ch.GetBaseURL())
 		common.SetContextKey(c, constant.ContextKeyChannelId, originTask.ChannelId)
 		common.SetContextKey(c, constant.ContextKeyChannelOnlyBaseUrl, ch.GetOnlyBaseUrl())
+		common.SetContextKey(c, constant.ContextKeyChannelCustomAdaptorId, ch.GetCustomAdaptorId())
 
 		info.ChannelBaseUrl = ch.GetBaseURL()
 		info.ChannelId = originTask.ChannelId
 		info.ChannelType = ch.Type
 		info.ApiKey = key
+		info.ChannelCustomAdaptorId = ch.GetCustomAdaptorId()
 	}
 
 	// 提取 remix 参数（时长、分辨率 → OtherRatios）
@@ -150,7 +153,7 @@ func RelayTaskSubmit(c *gin.Context, info *relaycommon.RelayInfo) (*TaskSubmitRe
 	if platform == "" {
 		platform = GetTaskPlatform(c)
 	}
-	adaptor := GetTaskAdaptor(platform)
+	adaptor := GetTaskAdaptor(platform, info.ChannelCustomAdaptorId)
 	if adaptor == nil {
 		return nil, service.TaskErrorWrapperLocal(fmt.Errorf("invalid api platform: %s", platform), "invalid_api_platform", http.StatusBadRequest)
 	}
@@ -220,6 +223,7 @@ func RelayTaskSubmit(c *gin.Context, info *relaycommon.RelayInfo) (*TaskSubmitRe
 	// 9. 发送请求
 	resp, err := adaptor.DoRequest(c, info, requestBody)
 	if err != nil {
+		logger.LogError(c.Request.Context(), fmt.Sprintf("relay task do request failed: %s", err.Error()))
 		return nil, service.TaskErrorWrapper(err, "do_request_failed", http.StatusInternalServerError)
 	}
 	if resp != nil && resp.StatusCode != http.StatusOK {
@@ -256,6 +260,63 @@ func RelayTaskSubmit(c *gin.Context, info *relaycommon.RelayInfo) (*TaskSubmitRe
 		Platform:       platform,
 		Quota:          finalQuota,
 	}, nil
+}
+
+func RelayCancelTaskSubmit(c *gin.Context) *dto.TaskError {
+	taskId := c.Param("task_id")
+	if taskId == "" {
+		taskId = c.GetString("task_id")
+	}
+	userId := c.GetInt("id")
+	task, exist, err := model.GetByTaskId(userId, taskId)
+	if err != nil {
+		return service.TaskErrorWrapper(err, "get_task_failed", http.StatusInternalServerError)
+	}
+	if !exist {
+		return service.TaskErrorWrapperLocal(errors.New("task_not_exist"), "task_not_exist", http.StatusBadRequest)
+	}
+
+	if task.Status != model.TaskStatusSubmitted && task.Status != model.TaskStatusNotStart {
+		return service.TaskErrorWrapperLocal(errors.New("task_not_pending"), "task_not_pending", http.StatusBadRequest)
+	}
+
+	channelModel, err := model.GetChannelById(task.ChannelId, true)
+	if err != nil {
+		return service.TaskErrorWrapper(err, "get_channel_failed", http.StatusInternalServerError)
+	}
+
+	baseURL := constant.ChannelBaseURLs[channelModel.Type]
+	if channelModel.GetBaseURL() != "" {
+		baseURL = channelModel.GetBaseURL()
+	}
+	proxy := channelModel.GetSetting().Proxy
+	adaptor := GetTaskAdaptor(task.Platform, channelModel.GetCustomAdaptorId())
+	if adaptor == nil {
+		return service.TaskErrorWrapperLocal(fmt.Errorf("invalid api platform: %s custom adaptor id: %s", task.Platform, channelModel.GetCustomAdaptorId()), "invalid_api_platform", http.StatusBadRequest)
+	}
+	taskErr := adaptor.CancelTask(c, baseURL, channelModel.Key, map[string]any{
+		"task_id": taskId,
+	}, proxy)
+
+	shouldRefund := false
+	if taskErr == nil {
+		if task.Quota > 0 {
+			shouldRefund = true
+		}
+		won, err := task.UpdateWithStatus(model.TaskStatusCancel)
+		if err != nil {
+			logger.LogError(c, fmt.Sprintf("UpdateWithStatus failed for task %s: %s", task.TaskID, err.Error()))
+			shouldRefund = false
+		}
+		if !won {
+			logger.LogWarn(c, fmt.Sprintf("Task %s already transitioned by another process, skip billing", task.TaskID))
+			shouldRefund = false
+		}
+	}
+	if shouldRefund {
+		service.RefundTaskQuota(c, task, "user cancel task")
+	}
+	return taskErr
 }
 
 // recalcQuotaFromRatios 根据 adjustedRatios 重新计算 quota。
@@ -387,7 +448,12 @@ func videoFetchByIDRespBodyBuilder(c *gin.Context) (respBody []byte, taskResp *d
 
 	// OpenAI Video API 格式: 走各 adaptor 的 ConvertToOpenAIVideo
 	if isOpenAIVideoAPI {
-		adaptor := GetTaskAdaptor(originTask.Platform)
+		channelModel, err := model.GetChannelById(originTask.ChannelId, true)
+		if err != nil {
+			taskResp = service.TaskErrorWrapper(err, "get_channel_failed", http.StatusInternalServerError)
+			return
+		}
+		adaptor := GetTaskAdaptor(originTask.Platform, channelModel.GetCustomAdaptorId())
 		if adaptor == nil {
 			taskResp = service.TaskErrorWrapperLocal(fmt.Errorf("invalid channel id: %d", originTask.ChannelId), "invalid_channel_id", http.StatusBadRequest)
 			return
@@ -433,7 +499,7 @@ func tryRealtimeFetch(task *model.Task, isOpenAIVideoAPI bool) []byte {
 		baseURL = channelModel.GetBaseURL()
 	}
 	proxy := channelModel.GetSetting().Proxy
-	adaptor := GetTaskAdaptor(constant.TaskPlatform(strconv.Itoa(channelModel.Type)))
+	adaptor := GetTaskAdaptor(constant.TaskPlatform(strconv.Itoa(channelModel.Type)), channelModel.GetCustomAdaptorId())
 	if adaptor == nil {
 		return nil
 	}

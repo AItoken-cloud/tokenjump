@@ -38,6 +38,7 @@ import (
 	"github.com/QuantumNous/new-api/relay/channel/task/kling"
 	tasksora "github.com/QuantumNous/new-api/relay/channel/task/sora"
 	"github.com/QuantumNous/new-api/relay/channel/task/suno"
+	"github.com/QuantumNous/new-api/relay/channel/task/third"
 	taskvertex "github.com/QuantumNous/new-api/relay/channel/task/vertex"
 	taskVidu "github.com/QuantumNous/new-api/relay/channel/task/vidu"
 	"github.com/QuantumNous/new-api/relay/channel/tencent"
@@ -132,7 +133,10 @@ func GetTaskPlatform(c *gin.Context) constant.TaskPlatform {
 	return constant.TaskPlatform(c.GetString("platform"))
 }
 
-func GetTaskAdaptor(platform constant.TaskPlatform) channel.TaskAdaptor {
+func GetTaskAdaptor(platform constant.TaskPlatform, customAdaptorId int) channel.TaskAdaptor {
+	if customAdaptorId > 0 {
+		return third.GetThirdAdaptor(customAdaptorId)
+	}
 	switch platform {
 	//case constant.APITypeAIProxyLibrary:
 	//	return &aiproxy.Adaptor{}

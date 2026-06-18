@@ -41,6 +41,7 @@ type Channel struct {
 	Group              string  `json:"group" gorm:"type:varchar(64);default:'default'"`
 	UsedQuota          int64   `json:"used_quota" gorm:"bigint;default:0"`
 	ModelMapping       *string `json:"model_mapping" gorm:"type:text"`
+	CustomAdaptorId    *int    `json:"custom_adaptor_id" gorm:"default:0"`
 	//MaxInputTokens     *int    `json:"max_input_tokens" gorm:"default:0"`
 	StatusCodeMapping *string `json:"status_code_mapping" gorm:"type:varchar(1024);default:''"`
 	Priority          *int64  `json:"priority" gorm:"bigint;default:0"`
@@ -354,6 +355,26 @@ func (channel *Channel) SaveWithoutKey() error {
 	return DB.Omit("key").Save(channel).Error
 }
 
+func GetCustomAdapterIdMap() (map[string]int, error) {
+	var channels []Channel
+	err := DB.Table("channels").
+		Select("models, custom_adaptor_id").
+		Where("custom_adaptor_id > 0").
+		Scan(&channels).Error
+	if err != nil {
+		return nil, err
+	}
+
+	customAdapterIdMap := make(map[string]int)
+	for _, channel := range channels {
+		models := channel.GetModels()
+		for _, model := range models {
+			customAdapterIdMap[model] = channel.GetCustomAdaptorId()
+		}
+	}
+	return customAdapterIdMap, err
+}
+
 func GetAllChannels(startIdx int, num int, selectAll bool, idSort bool, sortOptions ...ChannelSortOptions) ([]*Channel, error) {
 	var channels []*Channel
 	var err error
@@ -502,6 +523,10 @@ func (channel *Channel) GetBaseURL() string {
 
 func (channel *Channel) GetOnlyBaseUrl() bool {
 	return *channel.OnlyBaseUrl
+}
+
+func (channel *Channel) GetCustomAdaptorId() int {
+	return *channel.CustomAdaptorId
 }
 
 func (channel *Channel) GetModelMapping() string {
