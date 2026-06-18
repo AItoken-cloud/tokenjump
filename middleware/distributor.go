@@ -316,6 +316,8 @@ func getModelRequest(c *gin.Context) (*ModelRequest, bool, error) {
 		if _, ok := c.Get("relay_mode"); !ok {
 			c.Set("relay_mode", relayMode)
 		}
+	} else if strings.Contains(c.Request.URL.Path, "/v1/video/cancel") {
+		shouldSelectChannel = false
 	} else if strings.HasPrefix(c.Request.URL.Path, "/v1beta/models/") || strings.HasPrefix(c.Request.URL.Path, "/v1/models/") {
 		// Gemini API 路径处理: /v1beta/models/gemini-2.0-flash:generateContent
 		relayMode := relayconstant.RelayModeGemini
@@ -436,6 +438,7 @@ func SetupContextForSelectedChannel(c *gin.Context, channel *model.Channel, mode
 	common.SetContextKey(c, constant.ContextKeyChannelKey, key)
 	common.SetContextKey(c, constant.ContextKeyChannelBaseUrl, channel.GetBaseURL())
 	common.SetContextKey(c, constant.ContextKeyChannelOnlyBaseUrl, channel.GetOnlyBaseUrl())
+	common.SetContextKey(c, constant.ContextKeyChannelCustomAdaptorId, channel.GetCustomAdaptorId())
 
 	common.SetContextKey(c, constant.ContextKeySystemPromptOverride, false)
 

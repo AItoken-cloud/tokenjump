@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/QuantumNous/new-api/common"
+	"github.com/QuantumNous/new-api/dto"
 	"github.com/QuantumNous/new-api/model"
 	relaycommon "github.com/QuantumNous/new-api/relay/common"
 	"github.com/QuantumNous/new-api/setting/system_setting"
@@ -94,4 +95,11 @@ func (BaseBilling) AdjustBillingOnSubmit(_ *relaycommon.RelayInfo, _ []byte) map
 // AdjustBillingOnComplete returns 0 (keep pre-charged amount).
 func (BaseBilling) AdjustBillingOnComplete(_ *model.Task, _ *relaycommon.TaskInfo) int {
 	return 0
+}
+
+func (BaseBilling) CancelTask(_ *gin.Context, baseUrl, key string, body map[string]any, proxy string) *dto.TaskError {
+	return &dto.TaskError{
+		Code:    "unsupport_cancel_task",
+		Message: "unsupport cancel task",
+	}
 }

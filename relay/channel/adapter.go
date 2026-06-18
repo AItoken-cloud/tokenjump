@@ -76,6 +76,8 @@ type TaskAdaptor interface {
 
 	FetchTask(baseUrl, key string, body map[string]any, proxy string) (*http.Response, error)
 	ParseTaskResult(respBody []byte) (*relaycommon.TaskInfo, error)
+
+	CancelTask(c *gin.Context, baseUrl, key string, body map[string]any, proxy string) *dto.TaskError
 }
 
 type OpenAIVideoConverter interface {

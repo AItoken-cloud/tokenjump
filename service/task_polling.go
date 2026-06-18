@@ -33,7 +33,7 @@ type TaskPollingAdaptor interface {
 
 // GetTaskAdaptorFunc 由 main 包注入，用于获取指定平台的任务适配器。
 // 打破 service -> relay -> relay/channel -> service 的循环依赖。
-var GetTaskAdaptorFunc func(platform constant.TaskPlatform) TaskPollingAdaptor
+var GetTaskAdaptorFunc func(platform constant.TaskPlatform, customAdaptorId int) TaskPollingAdaptor
 
 // sweepTimedOutTasks 在主轮询之前独立清理超时任务。
 // 每次最多处理 100 条，剩余的下个周期继续处理。
@@ -187,7 +187,7 @@ func updateSunoTasks(ctx context.Context, channelId int, taskIds []string, taskM
 		}
 		return err
 	}
-	adaptor := GetTaskAdaptorFunc(constant.TaskPlatformSuno)
+	adaptor := GetTaskAdaptorFunc(constant.TaskPlatformSuno, ch.GetCustomAdaptorId())
 	if adaptor == nil {
 		return errors.New("adaptor not found")
 	}
@@ -321,14 +321,15 @@ func updateVideoTasks(ctx context.Context, platform constant.TaskPlatform, chann
 		}
 		return fmt.Errorf("CacheGetChannel failed: %w", err)
 	}
-	adaptor := GetTaskAdaptorFunc(platform)
+	adaptor := GetTaskAdaptorFunc(platform, cacheGetChannel.GetCustomAdaptorId())
 	if adaptor == nil {
 		return fmt.Errorf("video adaptor not found")
 	}
 	info := &relaycommon.RelayInfo{}
 	info.ChannelMeta = &relaycommon.ChannelMeta{
-		ChannelBaseUrl: cacheGetChannel.GetBaseURL(),
-		ChannelOnlyBaseUrl: cacheGetChannel.GetOnlyBaseUrl(),
+		ChannelBaseUrl:         cacheGetChannel.GetBaseURL(),
+		ChannelOnlyBaseUrl:     cacheGetChannel.GetOnlyBaseUrl(),
+		ChannelCustomAdaptorId: cacheGetChannel.GetCustomAdaptorId(),
 	}
 	info.ApiKey = cacheGetChannel.Key
 	adaptor.Init(info)

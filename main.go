@@ -120,8 +120,8 @@ func main() {
 	service.StartSubscriptionQuotaResetTask()
 
 	// Wire task polling adaptor factory (breaks service -> relay import cycle)
-	service.GetTaskAdaptorFunc = func(platform constant.TaskPlatform) service.TaskPollingAdaptor {
-		a := relay.GetTaskAdaptor(platform)
+	service.GetTaskAdaptorFunc = func(platform constant.TaskPlatform, customAdaptorId int) service.TaskPollingAdaptor {
+		a := relay.GetTaskAdaptor(platform, customAdaptorId)
 		if a == nil {
 			return nil
 		}
@@ -165,7 +165,7 @@ func main() {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": gin.H{
 				"message": fmt.Sprintf("Panic detected, error: %v. Please submit a issue here: https://github.com/Calcium-Ion/new-api", err),
-				"type":    "new_api_panic",
+				"type":    "tokenjump_panic",
 			},
 		})
 	}))

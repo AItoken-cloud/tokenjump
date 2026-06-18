@@ -16,6 +16,7 @@ import (
 	relaychannel "github.com/QuantumNous/new-api/relay/channel"
 	"github.com/QuantumNous/new-api/relay/channel/gemini"
 	"github.com/QuantumNous/new-api/relay/channel/ollama"
+	"github.com/QuantumNous/new-api/relay/channel/task/third"
 	"github.com/QuantumNous/new-api/service"
 
 	"github.com/gin-gonic/gin"
@@ -472,6 +473,10 @@ func validateChannel(channel *model.Channel, isAdd bool) error {
 				return fmt.Errorf("模型名称过长: %s", m)
 			}
 		}
+	}
+
+	if channel.CustomAdaptorId != nil && *channel.CustomAdaptorId > 0 && third.GetThirdAdaptor(*channel.CustomAdaptorId) == nil {
+		return fmt.Errorf("custom adaptor id %d not found", *channel.CustomAdaptorId)
 	}
 
 	// VertexAI 特殊校验

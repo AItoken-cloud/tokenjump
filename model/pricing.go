@@ -36,6 +36,7 @@ type Pricing struct {
 	BillingMode            string                  `json:"billing_mode,omitempty"`
 	BillingExpr            string                  `json:"billing_expr,omitempty"`
 	PricingVersion         string                  `json:"pricing_version,omitempty"`
+	CustomAdapterId        *int                    `json:"custom_adapter_id,omitempty"`
 }
 
 type PricingVendor struct {
@@ -112,6 +113,11 @@ func updatePricing() {
 	enableAbilities, err := GetAllEnableAbilityWithChannels()
 	if err != nil {
 		common.SysLog(fmt.Sprintf("GetAllEnableAbilityWithChannels error: %v", err))
+		return
+	}
+	customAdapterIdMap, err := GetCustomAdapterIdMap()
+	if err != nil {
+		common.SysLog(fmt.Sprintf("GetCustomAdapterIdMap error: %v", err))
 		return
 	}
 	// 预加载模型元数据与供应商一次，避免循环查询
@@ -336,6 +342,9 @@ func updatePricing() {
 				pricing.BillingMode = billingMode
 				pricing.BillingExpr = expr
 			}
+		}
+		if customAdapterId, ok := customAdapterIdMap[pricing.ModelName]; ok {
+			pricing.CustomAdapterId = &customAdapterId
 		}
 		pricingMap = append(pricingMap, pricing)
 	}
