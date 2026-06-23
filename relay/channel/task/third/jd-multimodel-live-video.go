@@ -13,7 +13,6 @@ import (
 	"github.com/QuantumNous/new-api/dto"
 	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/relay/channel"
-	"github.com/QuantumNous/new-api/relay/channel/task/doubao"
 	"github.com/QuantumNous/new-api/relay/channel/task/taskcommon"
 	relaycommon "github.com/QuantumNous/new-api/relay/common"
 
@@ -98,9 +97,7 @@ func (a *JdDoubaoLiveVideoAdaptor) EstimateBilling(c *gin.Context, info *relayco
 		return nil
 	}
 	if len(req.Videos) > 0 {
-		if ratio, ok := doubao.GetVideoInputRatio(info.OriginModelName); ok {
-			return map[string]float64{"video_input": ratio}
-		}
+		return map[string]float64{"video_input": 28.0 / 46.0}
 	}
 
 	return nil
