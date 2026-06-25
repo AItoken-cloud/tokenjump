@@ -91,9 +91,9 @@ jobs:
       - name: Image summary
         run: |
           echo "### Docker Image Digest (${{ matrix.arch }})" >> $GITHUB_STEP_SUMMARY
-          echo '```' >>  $ GITHUB_STEP_SUMMARY
-          echo "crpi-evsgwuujr0ij72w8.cn-hangzhou.personal.cr.aliyuncs.com/token_api/nexus_api: $ {TAG}- $ {{ matrix.arch }}" >>  $ GITHUB_STEP_SUMMARY
-          echo " $ {{ steps.build.outputs.digest }}" >>  $ GITHUB_STEP_SUMMARY
+          echo '```' >>  $GITHUB_STEP_SUMMARY
+          echo "crpi-evsgwuujr0ij72w8.cn-hangzhou.personal.cr.aliyuncs.com/token_api/nexus_api:${TAG}-${{ matrix.arch }}" >>  $GITHUB_STEP_SUMMARY
+          echo " ${{ steps.build.outputs.digest }}" >>  $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
   create_manifests:
@@ -123,6 +123,6 @@ jobs:
       - name: Manifest summary
         run: |
           echo "### Multi-arch Manifest" >> $GITHUB_STEP_SUMMARY
-          echo '```' >>  $ GITHUB_STEP_SUMMARY
-          docker buildx imagetools inspect crpi-evsgwuujr0ij72w8.cn-hangzhou.personal.cr.aliyuncs.com/token_api/nexus_api: $ {TAG} >>  $ GITHUB_STEP_SUMMARY
+          echo '```' >>  $GITHUB_STEP_SUMMARY
+          docker buildx imagetools inspect crpi-evsgwuujr0ij72w8.cn-hangzhou.personal.cr.aliyuncs.com/token_api/nexus_api:${TAG} >>  $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
