@@ -14,6 +14,7 @@ import (
 	"github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/dto"
 	"github.com/QuantumNous/new-api/logger"
+	relaycommon "github.com/QuantumNous/new-api/relay/common"
 	"github.com/QuantumNous/new-api/types"
 )
 
@@ -81,6 +82,20 @@ func ClaudeErrorWrapperLocal(err error, code string, statusCode int) *dto.Claude
 	claudeErr := ClaudeErrorWrapper(err, code, statusCode)
 	claudeErr.LocalError = true
 	return claudeErr
+}
+
+func RelayJdErrorHandle(ctx context.Context, responseBody []byte) *types.NewAPIError {
+	var responseError relaycommon.ResponseError
+	err := common.Unmarshal(responseBody, &responseError)
+	if err != nil {
+		logger.LogError(ctx, "Do openai request failed: %s, msg: %s", err.Error(), responseError.Msg)
+		//return types.NewOpenAIError(err, types.ErrorCodeBadResponseBody, http.StatusInternalServerError)
+	}
+
+	if responseError.Code != 0 {
+		return types.NewOpenAIError(errors.New(responseError.Msg), types.ErrorCodeDoRequestFailed, http.StatusInternalServerError)
+	}
+	return nil
 }
 
 func RelayErrorHandler(ctx context.Context, resp *http.Response, showBodyWhenFail bool) (newApiErr *types.NewAPIError) {
