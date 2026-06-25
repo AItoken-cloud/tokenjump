@@ -466,6 +466,16 @@ function CodeSamplesSection(props: {
     return 'https://api.example.com'
   }, [status])
 
+  const customAdaptorId = props.model.custom_adapter_id ?? 0
+  // 这里过滤掉 python 和 typescript 语言，因为它们在自定义适配器(custom_adapter_id)中不支持
+  const availableLangs = useMemo(() => {
+    const allLangs = Object.keys(LANG_LABELS) as Lang[]
+    if (customAdaptorId > 0) {
+      return allLangs.filter((l) => l !== 'python' && l !== 'typescript')
+    }
+    return allLangs
+  }, [customAdaptorId])
+
   const endpoints = useMemo(() => {
     const types = props.model.supported_endpoint_types || []
     return types
@@ -483,7 +493,9 @@ function CodeSamplesSection(props: {
   const [endpointType, setEndpointType] = useState<string>(
     endpoints[0]?.type ?? ''
   )
-  const [lang, setLang] = useState<Lang>('curl')
+  const [lang, setLang] = useState<Lang>(
+    availableLangs.includes('curl') ? 'curl' : availableLangs[0] ?? 'curl'
+  )
 
   const activeEndpoint = useMemo(() => {
     return endpoints.find((e) => e.type === endpointType) ?? endpoints[0]
@@ -493,13 +505,91 @@ function CodeSamplesSection(props: {
     return null
   }
 
-  const code = buildSample(lang, activeEndpoint.type, {
-    baseUrl,
-    apiKeyEnv: 'NEW_API_KEY',
-    modelName: props.model.model_name || '',
-    endpointType: activeEndpoint.type,
-    endpointPath: activeEndpoint.path,
-  })
+  const code = useMemo(() => {
+    const apiKeyRef = '$TOKENJUMP_API_KEY'
+
+    if (customAdaptorId === 1) {
+      return [
+        `curl -X POST "${baseUrl}/v1/video/generations" \\`,
+        `  -H "Authorization: Bearer ${apiKeyRef}" \\`,
+        `  -H "Content-Type: application/json" \\`,
+        `  -d '{`,
+        `    "model": "${props.model.model_name}",`,
+        `    "prompt": "minimal test",`,
+        `    "duration": 2,`,
+        `	"metadata": {`,
+        `		"ratio": "16:9",`,
+        `		"generate_audio": false,`,
+        `		"watermark": false,`,
+        `	},`,
+        `	"videos": ["https://", ""],`,
+        `	"audios": ["https://", ""],`,
+        `	"images": ["https://", ""],`,
+        `  }'`,
+      ].join('\n')
+    }
+
+    if (customAdaptorId === 2) {
+      return [
+        `curl -X POST "${baseUrl}/v1/video/generations" \\`,
+        `  -H "Authorization: Bearer ${apiKeyRef}" \\`,
+        `  -H "Content-Type: application/json" \\`,
+        `  -d '{`,
+        `    "model": "${props.model.model_name}",`,
+        `    "prompt": "minimal test",`,
+        `    "duration": 5,`,
+        `	"metadata": {`,
+        `	    "seed": -1,`,
+        `		"ratio": "16:9",`,
+        `		"resolution": "480p",`,
+        `		"frames":  29,`,
+        `		"camera_fixed": false,`,
+        `		"generate_audio": false,`,
+        `		"draft": false,`,
+        `		"service_tier": "default",`,
+        `		"execution_expires_after": 3600,`,
+        `		"watermark": false,`,
+        `		"tools": []`,
+        `	 }`,
+        `  }'`,
+      ].join('\n')
+    }
+
+    if (customAdaptorId === 3) {
+      return [
+        `curl -X POST "${baseUrl}/v1/video/generations" \\`,
+        `  -H "Authorization: Bearer ${apiKeyRef}" \\`,
+        `  -H "Content-Type: application/json" \\`,
+        `  -d '{`,
+        `    "model": "${props.model.model_name}",`,
+        `    "prompt": "minimal test",`,
+        `    "duration": 5,`,
+        `	   "images": ["https://"],`,
+        `	"metadata": {`,
+        `	    "seed": -1,`,
+        `		"ratio": "16:9",`,
+        `		"resolution": "480p",`,
+        `		"frames":  29,`,
+        `		"camera_fixed": false,`,
+        `		"generate_audio": false,`,
+        `		"draft": false,`,
+        `		"service_tier": "default",`,
+        `		"execution_expires_after": 3600,`,
+        `		"watermark": false,`,
+        `		"tools": []`,
+        `	 }`,
+        `  }'`,
+      ].join('\n')
+    }
+
+    return buildSample(lang, activeEndpoint.type, {
+      baseUrl,
+      apiKeyEnv: 'TOKENJUMP_API_KEY',
+      modelName: props.model.model_name || '',
+      endpointType: activeEndpoint.type,
+      endpointPath: activeEndpoint.path,
+    })
+  }, [customAdaptorId, lang, activeEndpoint, baseUrl, props.model])
 
   return (
     <section>
@@ -528,7 +618,7 @@ function CodeSamplesSection(props: {
           className='ml-auto'
         >
           <TabsList className='bg-muted/40 h-8 p-0.5'>
-            {(Object.keys(LANG_LABELS) as Lang[]).map((l) => (
+            {availableLangs.map((l) => (
               <TabsTrigger key={l} value={l} className='h-7 px-2.5 text-xs'>
                 {LANG_LABELS[l]}
               </TabsTrigger>

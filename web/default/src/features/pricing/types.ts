@@ -56,8 +56,7 @@ export type PricingModel = {
   billing_expr?: string
   /** Pricing version returned by backend, useful for cache busting */
   pricing_version?: string
-  /**
-   * Optional model metadata fields. These are not yet returned by the backend
+  /** Optional model metadata fields. These are not yet returned by the backend
    * and are populated client-side from {@link inferModelMetadata}.
    * When the backend ships these fields, the inference layer becomes a
    * fallback rather than the source of truth.
@@ -70,6 +69,8 @@ export type PricingModel = {
   input_modalities?: Modality[]
   output_modalities?: Modality[]
   capabilities?: ModelCapability[]
+  /** Custom adaptor ID (0=none, 1=JD multimodal, 2=JD text-to-video, 3=JD image-to-video) */
+  custom_adapter_id?: number
 }
 
 /** Input/output modalities supported by a model. */
