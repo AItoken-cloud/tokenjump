@@ -1,9 +1,15 @@
 package relay
 
 import (
+	"bytes"
+	"errors"
+	"io"
+	"net/http"
 	"strconv"
 
 	"github.com/QuantumNous/new-api/constant"
+	"github.com/QuantumNous/new-api/dto"
+	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/relay/channel"
 	"github.com/QuantumNous/new-api/relay/channel/ali"
 	"github.com/QuantumNous/new-api/relay/channel/aws"
@@ -48,10 +54,105 @@ import (
 	"github.com/QuantumNous/new-api/relay/channel/xunfei"
 	"github.com/QuantumNous/new-api/relay/channel/zhipu"
 	"github.com/QuantumNous/new-api/relay/channel/zhipu_4v"
+	relaycommon "github.com/QuantumNous/new-api/relay/common"
+	"github.com/QuantumNous/new-api/service"
+	"github.com/QuantumNous/new-api/types"
 	"github.com/gin-gonic/gin"
 )
 
+type JdWrapperAdaptor struct {
+	Adaptor channel.Adaptor
+}
+
+func (a *JdWrapperAdaptor) Init(info *relaycommon.RelayInfo) {
+	a.Adaptor.Init(info)
+}
+
+func (a *JdWrapperAdaptor) GetRequestURL(info *relaycommon.RelayInfo) (string, error) {
+	return a.Adaptor.GetRequestURL(info)
+}
+
+func (a *JdWrapperAdaptor) SetupRequestHeader(c *gin.Context, req *http.Header, info *relaycommon.RelayInfo) error {
+	return a.Adaptor.SetupRequestHeader(c, req, info)
+}
+
+func (a *JdWrapperAdaptor) ConvertOpenAIRequest(c *gin.Context, info *relaycommon.RelayInfo, request *dto.GeneralOpenAIRequest) (any, error) {
+	return a.Adaptor.ConvertOpenAIRequest(c, info, request)
+}
+
+func (a *JdWrapperAdaptor) ConvertRerankRequest(c *gin.Context, relayMode int, request dto.RerankRequest) (any, error) {
+	return a.Adaptor.ConvertRerankRequest(c, relayMode, request)
+}
+
+func (a *JdWrapperAdaptor) ConvertEmbeddingRequest(c *gin.Context, info *relaycommon.RelayInfo, request dto.EmbeddingRequest) (any, error) {
+	return a.Adaptor.ConvertEmbeddingRequest(c, info, request)
+}
+
+func (a *JdWrapperAdaptor) ConvertAudioRequest(c *gin.Context, info *relaycommon.RelayInfo, request dto.AudioRequest) (io.Reader, error) {
+	return a.Adaptor.ConvertAudioRequest(c, info, request)
+}
+
+func (a *JdWrapperAdaptor) ConvertImageRequest(c *gin.Context, info *relaycommon.RelayInfo, request dto.ImageRequest) (any, error) {
+	return a.Adaptor.ConvertImageRequest(c, info, request)
+}
+
+func (a *JdWrapperAdaptor) ConvertOpenAIResponsesRequest(c *gin.Context, info *relaycommon.RelayInfo, request dto.OpenAIResponsesRequest) (any, error) {
+	return a.Adaptor.ConvertOpenAIResponsesRequest(c, info, request)
+}
+
+func (a *JdWrapperAdaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, requestBody io.Reader) (any, error) {
+	resp, err := a.Adaptor.DoRequest(c, info, requestBody)
+	var httpResp *http.Response
+	if resp != nil {
+		httpResp = resp.(*http.Response)
+		if httpResp.StatusCode == http.StatusOK {
+			// 统一处理：读取后替换
+			responseBody, err := io.ReadAll(httpResp.Body)
+			httpResp.Body.Close()
+			if err != nil {
+				return nil, errors.New(err.Error())
+			}
+
+			jdErr := service.RelayJdErrorHandle(c, responseBody)
+			if jdErr != nil {
+				return nil, errors.New(jdErr.Error())
+			}
+
+			httpResp.Body = io.NopCloser(bytes.NewReader(responseBody))
+		}
+	}
+	return resp, err
+}
+
+func (a *JdWrapperAdaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (usage any, err *types.NewAPIError) {
+	return a.Adaptor.DoResponse(c, resp, info)
+}
+
+func (a *JdWrapperAdaptor) GetModelList() []string {
+	return a.Adaptor.GetModelList()
+}
+
+func (a *JdWrapperAdaptor) GetChannelName() string {
+	return a.Adaptor.GetChannelName()
+}
+
+func (a *JdWrapperAdaptor) ConvertClaudeRequest(c *gin.Context, info *relaycommon.RelayInfo, request *dto.ClaudeRequest) (any, error) {
+	return a.Adaptor.ConvertClaudeRequest(c, info, request)
+}
+
+func (a *JdWrapperAdaptor) ConvertGeminiRequest(c *gin.Context, info *relaycommon.RelayInfo, request *dto.GeminiChatRequest) (any, error) {
+	return a.Adaptor.ConvertGeminiRequest(c, info, request)
+}
+
 func GetAdaptor(apiType int) channel.Adaptor {
+	a := oriGetAdaptor(apiType)
+	if a == nil {
+		return nil
+	}
+	return &JdWrapperAdaptor{Adaptor: a}
+}
+
+func oriGetAdaptor(apiType int) channel.Adaptor {
 	switch apiType {
 	case constant.APITypeAli:
 		return &ali.Adaptor{}
@@ -133,7 +234,95 @@ func GetTaskPlatform(c *gin.Context) constant.TaskPlatform {
 	return constant.TaskPlatform(c.GetString("platform"))
 }
 
+type JdWrapperTaskAdaptor struct {
+	Adaptor channel.TaskAdaptor
+}
+
+func (j *JdWrapperTaskAdaptor) Init(info *relaycommon.RelayInfo) {
+	j.Adaptor.Init(info)
+}
+
+func (j *JdWrapperTaskAdaptor) ValidateRequestAndSetAction(c *gin.Context, info *relaycommon.RelayInfo) *dto.TaskError {
+	return j.Adaptor.ValidateRequestAndSetAction(c, info)
+}
+
+func (j *JdWrapperTaskAdaptor) EstimateBilling(c *gin.Context, info *relaycommon.RelayInfo) map[string]float64 {
+	return j.Adaptor.EstimateBilling(c, info)
+}
+
+func (j *JdWrapperTaskAdaptor) AdjustBillingOnSubmit(info *relaycommon.RelayInfo, taskData []byte) map[string]float64 {
+	return j.Adaptor.AdjustBillingOnSubmit(info, taskData)
+}
+
+func (j *JdWrapperTaskAdaptor) AdjustBillingOnComplete(task *model.Task, taskResult *relaycommon.TaskInfo) int {
+	return j.Adaptor.AdjustBillingOnComplete(task, taskResult)
+}
+
+func (j *JdWrapperTaskAdaptor) BuildRequestURL(info *relaycommon.RelayInfo) (string, error) {
+	return j.Adaptor.BuildRequestURL(info)
+}
+
+func (j *JdWrapperTaskAdaptor) BuildRequestHeader(c *gin.Context, req *http.Request, info *relaycommon.RelayInfo) error {
+	return j.Adaptor.BuildRequestHeader(c, req, info)
+}
+
+func (j *JdWrapperTaskAdaptor) BuildRequestBody(c *gin.Context, info *relaycommon.RelayInfo) (io.Reader, error) {
+	return j.Adaptor.BuildRequestBody(c, info)
+}
+
+func (j *JdWrapperTaskAdaptor) DoRequest(c *gin.Context, info *relaycommon.RelayInfo, requestBody io.Reader) (*http.Response, error) {
+	httpResp, err := j.Adaptor.DoRequest(c, info, requestBody)
+	// 京东报错的统一接口，需要特殊处理
+	if httpResp != nil && httpResp.StatusCode == http.StatusOK {
+		responseBody, err := io.ReadAll(httpResp.Body)
+		httpResp.Body.Close()
+		if err != nil {
+			return nil, errors.New(err.Error())
+		}
+
+		jdErr := service.RelayJdErrorHandle(c, responseBody)
+		if jdErr != nil {
+			return nil, errors.New(jdErr.Error())
+		}
+
+		httpResp.Body = io.NopCloser(bytes.NewReader(responseBody))
+	}
+	return httpResp, err
+}
+
+func (j *JdWrapperTaskAdaptor) DoResponse(c *gin.Context, resp *http.Response, info *relaycommon.RelayInfo) (taskID string, taskData []byte, err *dto.TaskError) {
+	return j.Adaptor.DoResponse(c, resp, info)
+}
+
+func (j *JdWrapperTaskAdaptor) GetModelList() []string {
+	return j.Adaptor.GetModelList()
+}
+
+func (j *JdWrapperTaskAdaptor) GetChannelName() string {
+	return j.Adaptor.GetChannelName()
+}
+
+func (j *JdWrapperTaskAdaptor) FetchTask(baseUrl, key string, body map[string]any, proxy string) (*http.Response, error) {
+	return j.Adaptor.FetchTask(baseUrl, key, body, proxy)
+}
+
+func (j *JdWrapperTaskAdaptor) ParseTaskResult(respBody []byte) (*relaycommon.TaskInfo, error) {
+	return j.Adaptor.ParseTaskResult(respBody)
+}
+
+func (j *JdWrapperTaskAdaptor) CancelTask(c *gin.Context, baseUrl, key string, body map[string]any, proxy string) *dto.TaskError {
+	return j.Adaptor.CancelTask(c, baseUrl, key, body, proxy)
+}
+
 func GetTaskAdaptor(platform constant.TaskPlatform, customAdaptorId int) channel.TaskAdaptor {
+	a := oriGetTaskAdaptor(customAdaptorId, platform)
+	if a == nil {
+		return nil
+	}
+	return &JdWrapperTaskAdaptor{Adaptor: a}
+}
+
+func oriGetTaskAdaptor(customAdaptorId int, platform constant.TaskPlatform) channel.TaskAdaptor {
 	if customAdaptorId > 0 {
 		return third.GetThirdAdaptor(customAdaptorId)
 	}

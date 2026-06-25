@@ -178,7 +178,7 @@ func (*JdDoubaoVideoCommonAdaptor) DoResponse(c *gin.Context, resp *http.Respons
 		taskErr = service.TaskErrorWrapper(errors.Wrapf(err, "body: %s", responseBody), "unmarshal_response_body_failed", http.StatusInternalServerError)
 		return
 	}
-	// "{\"result\":{\"task_id\":\"task-1fdynk1vw6m8c9d\",\"message\":\"任务提交成功\",\"status\":\"pending\"},\"requestId\":\"7f04a4fa6a375b05ebbaacc89c96e77c-TXJta\",\"error\":null}"
+
 	if dResp.Error != nil {
 		taskErr = service.TaskErrorWrapper(fmt.Errorf("%s, %s", dResp.Error.Message, dResp.Error.Cause), "invalid_response", http.StatusInternalServerError)
 		return
@@ -295,9 +295,6 @@ func (*JdDoubaoVideoCommonAdaptor) ValidateRequestAndSetAction(c *gin.Context, i
 }
 
 func (*JdDoubaoVideoCommonAdaptor) ParseTaskResult(respBody []byte) (*relaycommon.TaskInfo, error) {
-	// "{\"task_status\":\"running\",\"task_id\":\"task-dlrzgj3nbtwc6hy\",\"error\":{\"code\":0,\"type\":\"\",\"message\":\"\"},\"parameters\":null}"
-	// "{\"task_status\":\"success\",\"usage\":{\"video_output\":108900,\"has_video_input\":false,\"resolution\":\"720p\"},\"task_id\":\"task-dlrzgj3nbtwc6hy\",\"error\":{\"code\":0,\"type\":\"\",\"message\":\"\"},\"parameters\":{\"duration\":5,\"framespersecond\":24,\"execution_expires_after\":0,\"seed\":72756,\"draft\":false,\"service_tier\":\"default\",\"generate_audio\":true,\"resolution\":\"720p\",\"ratio\":\"16:9\"},\"content\":[{\"video_url\":{\"url\":\"https://maas-task.s3.cn-north-1.jdcloud-oss.com/prod-upload/2026-06-16/30916080-02178159499672200000000000000000000ffffac191c1d4e13a4.mp4\"},\"id\":\"\"}]}"
-
 	resTask := fetchTaskResult{}
 	if err := common.Unmarshal(respBody, &resTask); err != nil {
 		return nil, errors.Wrap(err, "unmarshal task result failed")
