@@ -16,18 +16,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import {
-  Zap,
-  Shield,
-  Globe,
-  Code,
-  Gauge,
-  DollarSign,
-  Users,
-  HeartHandshake,
-} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { AnimateInView } from '@/components/animate-in-view'
 
 interface FeaturesProps {
   className?: string
@@ -36,202 +25,180 @@ interface FeaturesProps {
 export function Features(_props: FeaturesProps) {
   const { t } = useTranslation()
 
-  const features = [
+  const features: { num: string; title: string; subtitle?: string; desc: string; visual: React.ReactNode }[] = [
     {
-      id: 'fast',
       num: '01',
-      title: t('Lightning Fast'),
-      desc: t(
-        'Optimized network architecture ensures millisecond response times'
-      ),
-      span: 'md:col-span-2',
-      icon: <Zap className='size-4 text-blue-400' />,
+      title: t('Enterprise Management'),
+      subtitle: t('All-in-One Step'),
+      desc: t('Assign independent keys to each employee with unified control over quota allocation, model restrictions, and usage tracking. Full-chain centralized management to meet diverse enterprise needs.'),
       visual: (
-        <div className='mt-4 grid grid-cols-3 gap-2'>
-          {['OpenAI', 'Claude', 'Gemini', 'DeepSeek', 'Qwen', 'Llama'].map(
-            (name) => (
-              <div
-                key={name}
-                className='border-border/30 bg-muted/20 text-muted-foreground flex items-center justify-center rounded-lg border px-3 py-2 text-xs transition-colors duration-300 hover:border-blue-500/30 hover:bg-blue-500/5'
-              >
-                {name}
-              </div>
-            )
-          )}
-        </div>
+        <svg viewBox='0 0 180 140'>
+          <circle cx='30' cy='35' r='11' fill='#fff' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <circle cx='30' cy='35' r='4' fill='#2563EB'/>
+          <circle cx='150' cy='35' r='11' fill='#fff' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <circle cx='150' cy='35' r='4' fill='#2563EB'/>
+          <circle cx='30' cy='110' r='11' fill='#fff' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <circle cx='30' cy='110' r='4' fill='#2563EB'/>
+          <circle cx='150' cy='110' r='11' fill='#fff' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <circle cx='150' cy='110' r='4' fill='#2563EB'/>
+          <line x1='41' y1='35' x2='79' y2='62' stroke='#0A0E1A' strokeWidth='1.2' opacity='.45'/>
+          <line x1='139' y1='35' x2='101' y2='62' stroke='#0A0E1A' strokeWidth='1.2' opacity='.45'/>
+          <line x1='41' y1='110' x2='79' y2='78' stroke='#0A0E1A' strokeWidth='1.2' opacity='.45'/>
+          <line x1='139' y1='110' x2='101' y2='78' stroke='#0A0E1A' strokeWidth='1.2' opacity='.45'/>
+          <path d='M150 35 L101 62 L90 70' stroke='#2563EB' strokeWidth='2' fill='none' strokeLinecap='round' opacity='.9'/>
+          <circle cx='90' cy='70' r='14' fill='#fff' stroke='#2563EB' strokeWidth='2'/>
+          <circle cx='84' cy='70' r='2' fill='#2563EB'/>
+          <circle cx='90' cy='70' r='2.5' fill='#0A0E1A'/>
+          <circle cx='96' cy='70' r='2' fill='#2563EB'/>
+          <circle cx='30' cy='22' r='1.5' fill='#2563EB'/>
+          <circle cx='150' cy='22' r='1.5' fill='#2563EB'/>
+          <circle cx='30' cy='123' r='1.5' fill='#2563EB'/>
+          <circle cx='150' cy='123' r='1.5' fill='#2563EB'/>
+        </svg>
       ),
     },
     {
-      id: 'secure',
       num: '02',
-      title: t('Secure & Reliable'),
-      desc: t(
-        'Enterprise-grade security with comprehensive permission management'
-      ),
-      span: 'md:col-span-1',
-      icon: <Shield className='size-4 text-emerald-400' />,
+      title: t('High Availability Guarantee'),
+      subtitle: t('Service Never Down'),
+      desc: t('Multi-vendor redundancy scheduling, automatic failover at single point of failure, stable operation — seamless switching for developers.'),
       visual: (
-        <div className='mt-4 flex items-center justify-center'>
-          <div className='relative'>
-            <div className='flex size-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/5'>
-              <Shield
-                className='size-7 text-emerald-500/70'
-                strokeWidth={1.5}
-              />
-            </div>
-            <div className='absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-emerald-500'>
-              <svg
-                className='size-2.5 text-white'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-                strokeWidth={3}
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='m4.5 12.75 6 6 9-13.5'
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <svg viewBox='0 0 180 140'>
+          <path d='M90 18 L132 32 L132 74 Q132 112 90 128 Q48 112 48 74 L48 32 Z'
+                fill='#fff' stroke='#0A0E1A' strokeWidth='2'/>
+          <path d='M90 36 L114 44 L114 74 Q114 100 90 110 Q66 100 66 74 L66 44 Z'
+                fill='none' stroke='#0A0E1A' strokeWidth='1' opacity='.35'/>
+          <rect x='78' y='42' width='24' height='3' rx='1.5' fill='#2563EB'/>
+          <circle cx='90' cy='74' r='16' fill='#2563EB'/>
+          <path d='M82 74 L88 80 L100 68' stroke='#fff' strokeWidth='3' fill='none' strokeLinecap='round' strokeLinejoin='round'/>
+        </svg>
       ),
     },
     {
-      id: 'global',
       num: '03',
-      title: t('Global Coverage'),
-      desc: t('Multi-region deployment for stable global access'),
-      span: 'md:col-span-1',
-      icon: <Globe className='size-4 text-violet-400' />,
+      title: t('30+ Models Unified API'),
+      subtitle: t('Unified API Access'),
+      desc: t('OpenAI, Claude, Gemini, DeepSeek, Qwen and other mainstream models, one API Key for all, complete migration in 5 minutes.'),
       visual: (
-        <div className='mt-4 space-y-2'>
-          {[t('Load Balancing'), t('Rate Limiting'), t('Cost Tracking')].map(
-            (step, i) => (
-              <div key={step} className='flex items-center gap-2'>
-                <div
-                  className={`flex size-6 items-center justify-center rounded-full text-[10px] font-bold ${
-                    i === 1
-                      ? 'border border-blue-500/30 bg-blue-500/20 text-blue-500'
-                      : 'border-border/40 bg-muted text-muted-foreground border'
-                  }`}
-                >
-                  {i + 1}
-                </div>
-                <div className='bg-border/40 h-px flex-1' />
-                <span className='text-muted-foreground text-xs'>{step}</span>
-              </div>
-            )
-          )}
-        </div>
+        <svg viewBox='0 0 180 140'>
+          <rect x='50' y='58' width='100' height='60' rx='8' fill='none' stroke='#2563EB' strokeWidth='1.2' opacity='.5'/>
+          <rect x='42' y='46' width='100' height='60' rx='8' fill='#fff' stroke='#0A0E1A' strokeWidth='1.2'/>
+          <rect x='34' y='34' width='100' height='60' rx='8' fill='#fff' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <rect x='34' y='34' width='100' height='14' rx='8' fill='#2563EB'/>
+          <circle cx='44' cy='41' r='2.5' fill='rgba(255,255,255,.85)'/>
+          <circle cx='52' cy='41' r='2.5' fill='rgba(255,255,255,.55)'/>
+          <circle cx='60' cy='41' r='2.5' fill='rgba(255,255,255,.35)'/>
+          <rect x='44' y='56' width='60' height='3' rx='1.5' fill='#0A0E1A' opacity='.7'/>
+          <rect x='44' y='64' width='40' height='3' rx='1.5' fill='#0A0E1A' opacity='.4'/>
+          <rect x='44' y='76' width='50' height='6' rx='3' fill='#2563EB' opacity='.85'/>
+          <rect x='98' y='76' width='28' height='6' rx='3' fill='#2563EB' opacity='.35'/>
+          <circle cx='52' cy='86' r='3' fill='#0A0E1A'/>
+          <line x1='62' y1='86' x2='125' y2='86' stroke='#0A0E1A' strokeWidth='1' opacity='.4'/>
+          <circle cx='52' cy='98' r='3' fill='#0A0E1A' opacity='.5'/>
+          <line x1='62' y1='98' x2='115' y2='98' stroke='#0A0E1A' strokeWidth='1' opacity='.3'/>
+          <circle cx='60' cy='110' r='3' fill='#2563EB' opacity='.6'/>
+        </svg>
       ),
     },
     {
-      id: 'developer',
       num: '04',
-      title: t('Developer Friendly'),
-      desc: t('Compatible API routes for common AI application workflows'),
-      span: 'md:col-span-2',
-      icon: <Code className='size-4 text-amber-400' />,
+      title: t('Pay-as-you-go Billing'),
+      subtitle: t('Transparent Consumption'),
+      desc: t('Precise billing based on actual token usage, no minimum consumption, no package binding, recharge from 1 yuan, instant到账, detailed usage traceable.'),
       visual: (
-        <div className='mt-4 flex items-center gap-3'>
-          <div className='flex -space-x-2'>
-            {['API', 'SDK', 'CLI', 'Docs'].map((n) => (
-              <div
-                key={n}
-                className='border-background from-muted to-muted/60 text-muted-foreground flex size-8 items-center justify-center rounded-full border-2 bg-gradient-to-br text-[9px] font-bold'
-              >
-                {n}
-              </div>
-            ))}
-          </div>
-          <div className='text-muted-foreground flex items-center gap-1.5 text-xs'>
-            <Code className='size-3.5 text-blue-500' />
-            {t('Multi-protocol Compatible')}
-          </div>
-        </div>
+        <svg viewBox='0 0 180 140'>
+          <line x1='14' y1='120' x2='166' y2='120' stroke='#0A0E1A' strokeWidth='1' opacity='.4'/>
+          <rect x='18' y='92' width='16' height='28' rx='3' fill='none' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <rect x='38' y='78' width='16' height='42' rx='3' fill='#0A0E1A'/>
+          <rect x='58' y='86' width='16' height='34' rx='3' fill='none' stroke='#0A0E1A' strokeWidth='1.5'/>
+          <rect x='78' y='58' width='16' height='62' rx='3' fill='#2563EB'/>
+          <rect x='98' y='68' width='16' height='52' rx='3' fill='none' stroke='#2563EB' strokeWidth='1.5'/>
+          <rect x='118' y='44' width='16' height='76' rx='3' fill='#0A0E1A'/>
+          <rect x='138' y='32' width='16' height='88' rx='3' fill='#2563EB'/>
+          <circle cx='146' cy='26' r='5' fill='#fff' stroke='#2563EB' strokeWidth='2'/>
+          <path d='M22 108 L42 96 L62 102 L82 78 L102 84 L122 60 L142 44' stroke='#2563EB' strokeWidth='1.5' fill='none' strokeLinecap='round' strokeLinejoin='round' opacity='.7'/>
+          <path d='M138 44 L146 42 L146 50' stroke='#2563EB' strokeWidth='1.5' fill='none' strokeLinecap='round' strokeLinejoin='round'/>
+        </svg>
       ),
-    },
-  ]
-
-  const additionalFeatures = [
-    {
-      icon: <Gauge className='size-5' strokeWidth={1.5} />,
-      title: t('High Performance'),
-      desc: t('Support for high concurrency with automatic load balancing'),
-    },
-    {
-      icon: <DollarSign className='size-5' strokeWidth={1.5} />,
-      title: t('Transparent Billing'),
-      desc: t('Pay-as-you-go with real-time usage monitoring'),
-    },
-    {
-      icon: <Users className='size-5' strokeWidth={1.5} />,
-      title: t('Team Collaboration'),
-      desc: t('Multi-user management with flexible permission allocation'),
-    },
-    {
-      icon: <HeartHandshake className='size-5' strokeWidth={1.5} />,
-      title: t('Open Source'),
-      desc: t('Community driven, self-hosted, and extensible'),
     },
   ]
 
   return (
-    <section className='relative z-10 px-6 py-24 md:py-32'>
-      <div className='mx-auto max-w-6xl'>
-        <AnimateInView className='mb-16 max-w-lg'>
-          <p className='text-muted-foreground mb-3 text-xs font-medium tracking-widest uppercase'>
-            {t('Core Features')}
-          </p>
-          <h2 className='text-2xl leading-tight font-bold tracking-tight md:text-3xl'>
-            {t('Built for developers,')}
-            <br />
-            {t('designed for scale')}
-          </h2>
-        </AnimateInView>
+    <section className='hp-features'>
+      {/* Background decorations - matching HTML exactly */}
+      <div className='hp-mesh' style={{top:'auto',bottom:0,left:0,width:280,height:280,maskImage:'radial-gradient(ellipse 100% 100% at 0% 100%, rgba(0,0,0,.7) 0%, rgba(0,0,0,.3) 35%, transparent 68%)'}}></div>
+      <div className='hp-mesh' style={{top:'auto',bottom:0,right:0,width:260,height:260,maskImage:'radial-gradient(ellipse 100% 100% at 100% 100%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.22) 35%, transparent 65%)'}}></div>
 
-        {/* Bento grid */}
-        <div className='border-border/40 bg-border/40 grid gap-px overflow-hidden rounded-xl border md:grid-cols-3'>
-          {features.map((f, i) => (
-            <AnimateInView
-              key={f.id}
-              delay={i * 100}
-              animation='scale-in'
-              className={`bg-background group hover:bg-muted/20 p-7 transition-colors duration-300 md:p-8 ${f.span}`}
-            >
-              <div className='mb-3 flex items-center gap-3'>
-                <span className='border-border/40 bg-muted text-muted-foreground flex size-7 items-center justify-center rounded-md border text-[10px] font-semibold tabular-nums'>
-                  {f.num}
-                </span>
-                <h3 className='text-sm font-semibold'>{f.title}</h3>
-              </div>
-              <p className='text-muted-foreground text-sm leading-relaxed'>
-                {f.desc}
-              </p>
-              {f.visual}
-            </AnimateInView>
-          ))}
+      <div className='hp-deco' style={{top:'8%',right:'6%',width:90,height:90}}>
+        <svg viewBox='0 0 90 90'>
+          <polygon className='hp-rg d' points='45,8 82,45 45,82 8,45' fill='none'/>
+          <polygon className='hp-rg e' points='45,22 68,45 45,68 22,45' fill='none'/>
+          <rect className='hp-rdot-sq' x='42' y='42' width='6' height='6' fill='#2563EB'/>
+        </svg>
+      </div>
+
+      <div className='hp-deco' style={{top:'48%',left:'4%',width:80,height:80}}>
+        <svg viewBox='0 0 80 80'>
+          <polygon className='hp-rg c' points='40,8 68,24 68,56 40,72 12,56 12,24' fill='none'/>
+          <circle className='hp-rdot' cx='40' cy='40' r='2.5'/>
+        </svg>
+      </div>
+
+      <div className='hp-deco' style={{bottom:'8%',right:'8%',width:100,height:100}}>
+        <svg viewBox='0 0 100 100'>
+          <circle className='hp-rg d' cx='50' cy='50' r='44'/>
+          <circle className='hp-rg e' cx='50' cy='50' r='28'/>
+          <circle className='hp-rg c' cx='50' cy='50' r='14'/>
+          <rect className='hp-rdot-sq' x='47' y='47' width='6' height='6' fill='#2563EB'/>
+        </svg>
+      </div>
+
+      <div className='hp-plus' style={{top:'20%',right:'15%'}}></div>
+      <div className='hp-plus' style={{top:'65%',right:'5%'}}></div>
+      <div className='hp-plus' style={{bottom:'18%',left:'8%'}}></div>
+
+      <div className='hp-bracket' style={{top:'35%',right:'3%'}}></div>
+      <div className='hp-bracket' style={{bottom:'25%',left:'3%',transform:'scale(-1,-1)'}}></div>
+
+      <div className='hp-dot-line' style={{top:'15%',right:0,width:'15%'}}></div>
+      <div className='hp-dot-line' style={{bottom:'30%',left:0,width:'18%'}}></div>
+
+      <div className='hp-sdot' style={{top:'30%',right:'20%',animationDuration:'6.5s'}}></div>
+      <div className='hp-sdot' style={{top:'55%',left:'14%',animationDuration:'7s',animationDelay:'1s'}}></div>
+      <div className='hp-sdot' style={{bottom:'20%',left:'22%',animationDuration:'5.5s',animationDelay:'.5s'}}></div>
+      <div className='hp-sdot' style={{bottom:'40%',right:'18%',animationDuration:'6.8s',animationDelay:'1.5s'}}></div>
+
+      <div className='hp-vlabel' style={{top:'50%',left:'1%',transform:'translateY(-50%) rotate(-90deg)',transformOrigin:'left center',color:'rgba(37,99,235,.18)'}}>TokenJump · {t('Core Features')}</div>
+
+      <div className='hp-features-inner'>
+        <div className='hp-section-head'>
+          <span className='hp-eyebrow'>{t('Core Features')}</span>
+          <h2 className='hp-section-h'>
+            {t('Fast, Stable, Reliable')}<br/>
+            {t('AI Access Experience')}
+          </h2>
+          <p className='hp-section-sub'>
+            {t('Below is an overview of the main features we provide. For more in-depth content, please browse our documentation and blog.')}
+          </p>
         </div>
 
-        {/* Additional features row */}
-        <div className='mt-12 grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12'>
-          {additionalFeatures.map((f, i) => (
-            <AnimateInView
-              key={f.title}
-              delay={i * 100}
-              animation='fade-up'
-              className='flex flex-col items-center text-center'
-            >
-              <div className='text-muted-foreground border-border/50 bg-muted/30 group-hover:text-foreground mb-3 flex size-12 items-center justify-center rounded-xl border transition-colors'>
-                {f.icon}
+        <div className='hp-cards'>
+          {features.map((feature, i) => (
+            <div key={i} className='hp-card'>
+              <div className='hp-card-text'>
+                <div className='hp-card-num'>{feature.num}</div>
+                <h3 className='hp-card-title'>
+                  {feature.title}
+                  {'subtitle' in feature && feature.subtitle && (
+                    <><br/><span className='hp-card-subtitle'>{feature.subtitle}</span></>
+                  )}
+                </h3>
+                <p className='hp-card-desc'>{feature.desc}</p>
               </div>
-              <h3 className='mb-1.5 text-sm font-semibold'>{f.title}</h3>
-              <p className='text-muted-foreground max-w-[200px] text-xs leading-relaxed'>
-                {f.desc}
-              </p>
-            </AnimateInView>
+              <div className='hp-card-visual'>
+                {feature.visual}
+              </div>
+            </div>
           ))}
         </div>
       </div>

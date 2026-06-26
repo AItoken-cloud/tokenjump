@@ -17,225 +17,123 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
-import { CherryStudio } from '@lobehub/icons'
-import { ArrowRight, BookOpen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useStatus } from '@/hooks/use-status'
-import { Button } from '@/components/ui/button'
-import { HeroTerminalDemo } from '../hero-terminal-demo'
+import { useSystemConfig } from '@/hooks/use-system-config'
+import { getLobeIcon } from '@/lib/lobe-icon'
 
 interface HeroProps {
   className?: string
   isAuthenticated?: boolean
 }
 
-// Stylized three-dots indicator representing "More"
-const MoreIcon = () => (
-  <svg
-    className='text-muted-foreground/60 group-hover:text-foreground size-6 shrink-0 transition-colors'
-    viewBox='0 0 24 24'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <circle cx='6' cy='12' r='2' fill='currentColor' />
-    <circle cx='12' cy='12' r='2' fill='currentColor' />
-    <circle cx='18' cy='12' r='2' fill='currentColor' />
-  </svg>
-)
+// Model icons for the strip - using LobeHub icons consistent with pricing page
+const MODEL_ICONS = [
+  { name: 'OpenAI', iconKey: 'OpenAI.Color' },
+  { name: 'Claude', iconKey: 'Anthropic.Color' },
+  { name: 'Gemini', iconKey: 'Gemini.Color' },
+  { name: 'DeepSeek', iconKey: 'DeepSeek.Color' },
+  { name: 'Llama', iconKey: 'Meta.Color' },
+  { name: 'Mistral', iconKey: 'Mistral.Color' },
+  { name: 'Qwen', iconKey: 'Qwen.Color' },
+  { name: 'Grok', iconKey: 'Grok.Color' },
+]
 
 export function Hero(props: HeroProps) {
   const { t } = useTranslation()
   const { status } = useStatus()
+  const { logo: systemLogo, logoLoaded } = useSystemConfig()
   const docsUrl =
     (status?.docs_link as string | undefined) || 'https://doc.tokenjump.cc'
 
-  const renderDocsButton = () => {
-    const isExternal = docsUrl.startsWith('http')
-    if (isExternal) {
-      return (
-        <Button
-          variant='outline'
-          className='group border-border/50 hover:border-border hover:bg-muted/50 inline-flex h-11 items-center gap-1.5 rounded-lg px-5 text-sm font-medium'
-          render={
-            <a href={docsUrl} target='_blank' rel='noopener noreferrer' />
-          }
-        >
-          <BookOpen className='text-muted-foreground/80 group-hover:text-foreground size-4 transition-colors duration-200' />
-          <span>{t('Docs')}</span>
-        </Button>
-      )
-    }
-    return (
-      <Button
-        variant='outline'
-        className='group border-border/50 hover:border-border hover:bg-muted/50 inline-flex h-11 items-center gap-1.5 rounded-lg px-5 text-sm font-medium'
-        render={<Link to={docsUrl} />}
-      >
-        <BookOpen className='text-muted-foreground/80 group-hover:text-foreground size-4 transition-colors duration-200' />
-        <span>{t('Docs')}</span>
-      </Button>
-    )
-  }
-
   return (
-    <section className='relative z-10 overflow-hidden px-6 pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28'>
-      {/* Radial gradient background */}
-      <div
-        aria-hidden
-        className='pointer-events-none absolute inset-0 -z-10 opacity-25 dark:opacity-[0.12]'
-        style={{
-          background: [
-            'radial-gradient(ellipse 60% 50% at 20% 20%, oklch(0.72 0.18 250 / 80%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 50% 40% at 80% 15%, oklch(0.65 0.15 200 / 60%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 40% 35% at 40% 80%, oklch(0.70 0.12 280 / 40%) 0%, transparent 70%)',
-          ].join(', '),
-        }}
-      />
-      {/* Grid pattern */}
-      <div
-        aria-hidden
-        className='absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,black_20%,transparent_100%)] bg-[size:4rem_4rem] opacity-[0.08]'
-      />
+    <section className='hp-hero'>
+      {/* Bottom glow */}
+      <div className='hp-glow'></div>
 
-      <div className='mx-auto grid max-w-6xl grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-8'>
-        {/* Left Column: Title, description, action buttons and application support */}
-        <div className='flex flex-col items-start text-left lg:col-span-6'>
-          {/* Top Pill Badge */}
-          <div
-            className='landing-animate-fade-up mb-5 inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 px-3 py-1.5 text-[11px] font-medium text-blue-600 opacity-0 shadow-xs dark:border-blue-400/20 dark:bg-blue-400/5 dark:text-blue-400'
-            style={{ animationDelay: '0ms' }}
-          >
-            <span className='relative flex size-1.5'>
-              <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75' />
-              <span className='relative inline-flex size-1.5 rounded-full bg-blue-500 dark:bg-blue-400' />
-            </span>
-            <span>{t('AI Application Infrastructure Foundation')}</span>
-          </div>
+      {/* Logo - use system logo with animation */}
+      <div className='hp-hlogo'>
+        {systemLogo && logoLoaded ? (
+          <img src={systemLogo} alt='logo' className='hp-hlogo-img' />
+        ) : (
+          <svg viewBox='0 0 64 64'>
+            <path className='sh' d='M18 14 L34 6 L38 22 L22 30 Z' fill='#2563EB'/>
+            <path className='sh' d='M8 22 L18 18 L22 28 L12 32 Z' fill='#3B82F6'/>
+            <path className='sh' d='M28 30 L46 22 L52 42 L34 50 Z' fill='#2563EB'/>
+            <path className='sh' d='M44 38 L56 32 L60 44 L48 50 Z' fill='#3B82F6'/>
+          </svg>
+        )}
+      </div>
 
-          <h1
-            className='landing-animate-fade-up text-[clamp(2.25rem,4.5vw,3.25rem)] leading-[1.15] font-bold tracking-tight'
-            style={{ animationDelay: '60ms' }}
-          >
-            {t('Unified API Gateway for')}
-            <br />
-            <span className='bg-gradient-to-r from-blue-400 via-violet-400 to-purple-500 bg-clip-text text-transparent'>
-              {t('Vast Range of AI Models')}
-            </span>
-          </h1>
-          <p
-            className='landing-animate-fade-up text-muted-foreground/80 mt-5 max-w-xl text-base leading-relaxed opacity-0 md:text-[15px]'
-            style={{ animationDelay: '120ms' }}
-          >
-            {t(
-              'Access a vast selection of models via a standard, unified API protocol. Power AI applications, manage digital assets, and connect the Future.'
-            )}
-          </p>
+      {/* Title */}
+      <h1 className='hp-h1'>
+        <span className='w'>One</span>&nbsp;<span className='w'>jump,</span><br/>
+        <span className='w hl'>{t('boundless')}</span>&nbsp;<span className='w'>{t('flow.')}</span>
+      </h1>
 
-          <div
-            className='landing-animate-fade-up mt-8 flex flex-wrap items-center gap-3 opacity-0'
-            style={{ animationDelay: '180ms' }}
-          >
-            {props.isAuthenticated ? (
-              <>
-                <Button
-                  className='group h-11 rounded-lg px-5 text-sm font-medium'
-                  render={<Link to='/dashboard' />}
-                >
-                  {t('Go to Dashboard')}
-                  <ArrowRight className='ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
-                </Button>
-                {renderDocsButton()}
-              </>
-            ) : (
-              <>
-                <Button
-                  className='group h-11 rounded-lg px-5 text-sm font-medium'
-                  render={<Link to='/sign-up' />}
-                >
-                  {t('Get Started')}
-                  <ArrowRight className='ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
-                </Button>
-                <Button
-                  variant='outline'
-                  className='border-border/50 hover:border-border hover:bg-muted/50 h-11 rounded-lg px-5 text-sm font-medium'
-                  render={<Link to='/pricing' />}
-                >
-                  {t('View Pricing')}
-                </Button>
-                {renderDocsButton()}
-              </>
-            )}
-          </div>
+      {/* Subtitle */}
+      <p className='hp-sub'>
+        {t('Unified access to global mainstream AI model APIs, intelligent routing, stable supply, pay-as-you-go billing.')}<br/>
+        {t('One integration, all models available.')}
+      </p>
 
-          {/* Supported Apps (参考图二样式，进行卡片化和信息扩充设计，增加视觉高度) */}
-          <div
-            className='landing-animate-fade-up mt-10 w-full max-w-xl opacity-0'
-            style={{ animationDelay: '240ms' }}
-          >
-            <div className='mb-4 flex flex-col gap-1'>
-              <span className='text-muted-foreground/50 text-[10px] font-bold tracking-[0.15em] uppercase'>
-                {t('Supported Applications')}
+      {/* Buttons */}
+      <div className='hp-btns'>
+        {props.isAuthenticated ? (
+          <>
+            <Link to='/dashboard/$section' params={{ section: 'overview' }} className='hp-btn hp-btn-d'>
+              {t('Start Now')}
+              <span className='bc'>
+                <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                  <path d='M2 6h8M6 2l4 4-4 4'/>
+                </svg>
               </span>
-              <p className='text-muted-foreground/60 text-xs leading-relaxed'>
-                {t(
-                  'Supports one-click configuration and perfectly adapts to NewAPI multi-protocol configuration.'
-                )}
-              </p>
-            </div>
-            <div className='flex flex-wrap items-center gap-3'>
-              {/* Cherry Studio */}
-              <a
-                href='https://cherry-ai.com'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='group border-border/40 bg-muted/15 text-foreground/80 hover:border-border hover:bg-muted/30 hover:text-foreground flex items-center gap-3 rounded-full border px-5 py-2.5 text-sm font-medium shadow-[0_1px_2.5px_rgba(0,0,0,0.01)] backdrop-blur-xs transition-all duration-300 hover:scale-[1.02]'
-              >
-                <CherryStudio.Color size={24} className='shrink-0' />
-                <span>Cherry Studio</span>
-              </a>
+            </Link>
+            <a href={docsUrl} target='_blank' rel='noopener noreferrer' className='hp-btn hp-btn-g'>
+              {t('View Docs')}
+              <span className='bc'>
+                <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                  <path d='M3 9L9 3M4 3h5v5'/>
+                </svg>
+              </span>
+            </a>
+          </>
+        ) : (
+          <>
+            <Link to='/sign-up' className='hp-btn hp-btn-d'>
+              {t('Get Started')}
+              <span className='bc'>
+                <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                  <path d='M2 6h8M6 2l4 4-4 4'/>
+                </svg>
+              </span>
+            </Link>
+            <a href={docsUrl} target='_blank' rel='noopener noreferrer' className='hp-btn hp-btn-g'>
+              {t('View Docs')}
+              <span className='bc'>
+                <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                  <path d='M3 9L9 3M4 3h5v5'/>
+                </svg>
+              </span>
+            </a>
+          </>
+        )}
+      </div>
 
-              {/* CC Switch */}
-              <a
-                href='https://ccswitch.io'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='group border-border/40 bg-muted/15 text-foreground/80 hover:border-border hover:bg-muted/30 hover:text-foreground flex items-center gap-3 rounded-full border px-5 py-2.5 text-sm font-medium shadow-[0_1px_2.5px_rgba(0,0,0,0.01)] backdrop-blur-xs transition-all duration-300 hover:scale-[1.02]'
-              >
-                <img
-                  src='https://ccswitch.io/favicon.png'
-                  alt='CC Switch'
-                  className='size-6 shrink-0 rounded-md object-contain'
-                  onError={(e) => {
-                    // Fallback to a styled text avatar if the remote favicon fails to load in sandbox or local environments
-                    e.currentTarget.style.display = 'none'
-                    const fallback = e.currentTarget.nextSibling as HTMLElement
-                    if (fallback) fallback.style.display = 'flex'
-                  }}
-                />
-                <span
-                  style={{ display: 'none' }}
-                  className='size-6 shrink-0 items-center justify-center rounded-md bg-blue-500/10 text-[10px] font-bold text-blue-600 dark:bg-blue-400/10 dark:text-blue-400'
-                >
-                  CC
-                </span>
-                <span>CC Switch</span>
-              </a>
-
-              {/* "更多" */}
-              <div className='group border-border/40 bg-muted/15 text-foreground/55 hover:border-border hover:bg-muted/30 hover:text-foreground flex cursor-default items-center gap-2.5 rounded-full border px-5 py-2.5 text-sm font-medium shadow-[0_1px_2.5px_rgba(0,0,0,0.01)] backdrop-blur-xs transition-all duration-300 hover:scale-[1.02]'>
-                <MoreIcon />
-                <span>{t('More Apps')}</span>
-              </div>
+      {/* Model strip */}
+      <div className='hp-mstrip'>
+        <span className='hp-mstrip-lbl'>{t('30+ Mainstream Models Integrated')}</span>
+        <div className='hp-mpills'>
+          {MODEL_ICONS.map((model) => (
+            <div key={model.name} className='hp-mpill'>
+              {getLobeIcon(model.iconKey, 15)}
+              {model.name === 'Qwen' ? t('Qwen') : model.name}
+              <span className='hp-ldot'></span>
             </div>
+          ))}
+          <div className='hp-mpill' style={{color: 'var(--hp-ink4)', borderStyle: 'dashed'}}>
+            + 22 {t('more')}
           </div>
-        </div>
-
-        {/* Right Column: Hero Terminal API Demo */}
-        <div
-          className='landing-animate-fade-up flex w-full justify-center opacity-0 lg:col-span-6'
-          style={{ animationDelay: '320ms' }}
-        >
-          <HeroTerminalDemo className='mt-8 lg:mt-0' />
         </div>
       </div>
     </section>

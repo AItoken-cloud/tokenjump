@@ -17,10 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { Link } from '@tanstack/react-router'
-import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@/components/ui/button'
-import { AnimateInView } from '@/components/animate-in-view'
 
 interface CTAProps {
   className?: string
@@ -30,54 +27,77 @@ interface CTAProps {
 export function CTA(props: CTAProps) {
   const { t } = useTranslation()
 
-  if (props.isAuthenticated) {
-    return null
-  }
-
   return (
-    <section className='relative z-10 overflow-hidden px-6 py-24 md:py-32'>
-      {/* Gradient mesh background */}
-      <div
-        aria-hidden
-        className='absolute inset-0 -z-10 opacity-20 dark:opacity-[0.08]'
-        style={{
-          background: [
-            'radial-gradient(ellipse 50% 50% at 30% 50%, oklch(0.7 0.15 250 / 70%) 0%, transparent 70%)',
-            'radial-gradient(ellipse 40% 40% at 70% 40%, oklch(0.65 0.12 200 / 50%) 0%, transparent 70%)',
-          ].join(', '),
-        }}
-      />
+    <section className='hp-cta-section'>
+      {/* Background decorations - matching HTML exactly */}
+      <div className='hp-mesh' style={{top:'auto',bottom:0,left:0,width:280,height:280,maskImage:'radial-gradient(ellipse 100% 100% at 0% 100%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.22) 35%, transparent 65%)'}}></div>
+      <div className='hp-mesh' style={{top:'auto',bottom:0,right:0,width:260,height:260,maskImage:'radial-gradient(ellipse 100% 100% at 100% 100%, rgba(0,0,0,.45) 0%, rgba(0,0,0,.2) 35%, transparent 62%)'}}></div>
 
-      <AnimateInView
-        className='mx-auto max-w-2xl text-center'
-        animation='scale-in'
-      >
-        <h2 className='text-2xl leading-tight font-bold tracking-tight md:text-4xl'>
-          {t('Ready to simplify')}
-          <br />
-          <span className='bg-gradient-to-r from-blue-400 via-violet-400 to-purple-500 bg-clip-text text-transparent'>
-            {t('your AI integration?')}
-          </span>
+      <div className='hp-deco' style={{top:'18%',left:'5%',width:90,height:90}}>
+        <svg viewBox='0 0 90 90'>
+          <polygon className='hp-rg d' points='45,8 82,45 45,82 8,45' fill='none'/>
+          <polygon className='hp-rg e' points='45,22 68,45 45,68 22,45' fill='none'/>
+          <rect className='hp-rdot-sq' x='42' y='42' width='6' height='6' fill='#2563EB'/>
+        </svg>
+      </div>
+
+      <div className='hp-deco' style={{top:'25%',right:'6%',width:80,height:80}}>
+        <svg viewBox='0 0 80 80'>
+          <polygon className='hp-rg c' points='40,8 72,40 40,72 8,40' fill='none'/>
+          <circle className='hp-rdot' cx='40' cy='40' r='2.5'/>
+        </svg>
+      </div>
+
+      <div className='hp-plus' style={{top:'30%',right:'14%'}}></div>
+      <div className='hp-plus' style={{bottom:'30%',left:'12%'}}></div>
+      <div className='hp-bracket' style={{top:'50%',right:'3%',transform:'scale(-1,-1)'}}></div>
+      <div className='hp-dot-line' style={{top:'15%',left:0,width:'14%'}}></div>
+      <div className='hp-dot-line' style={{bottom:'25%',right:0,width:'16%'}}></div>
+
+      <div className='hp-sdot' style={{top:'35%',left:'20%',animationDuration:'6s'}}></div>
+      <div className='hp-sdot' style={{top:'55%',right:'18%',animationDuration:'7s',animationDelay:'1s'}}></div>
+      <div className='hp-sdot' style={{bottom:'30%',right:'25%',animationDuration:'5.5s',animationDelay:'.5s'}}></div>
+
+      <div className='hp-cta-inner'>
+        <div className='hp-cta-quote'>"</div>
+        <h2 className='hp-cta-title'>
+          {t('Say Goodbye to Complex Integration')}<br/>
+          <span className='accent'>{t('Focus on What Really Matters')}</span>
         </h2>
-        <p className='text-muted-foreground/80 mx-auto mt-5 max-w-md text-sm leading-relaxed md:text-base'>
-          {t(
-            'Deploy your own gateway and start routing requests through your configured upstream services.'
-          )}
+        <p className='hp-cta-sub'>
+          {t('Complete integration in 5 minutes, instantly access 30+ large models. Let TokenJump handle the infrastructure, focus on your product innovation.')}
         </p>
-        <div className='mt-8 flex items-center justify-center gap-3'>
-          <Button className='group rounded-lg' render={<Link to='/sign-up' />}>
-            {t('Get Started')}
-            <ArrowRight className='ml-1 size-3.5 transition-transform duration-200 group-hover:translate-x-0.5' />
-          </Button>
-          <Button
-            variant='outline'
-            className='border-border/50 hover:border-border hover:bg-muted/50 rounded-lg'
-            render={<Link to='/pricing' />}
-          >
+
+        <div className='hp-cta-actions'>
+          {props.isAuthenticated ? (
+            <Link to='/dashboard/$section' params={{ section: 'overview' }} className='hp-btn hp-btn-d'>
+              {t('Start Now')}
+              <span className='bc'>
+                <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                  <path d='M2 6h8M6 2l4 4-4 4'/>
+                </svg>
+              </span>
+            </Link>
+          ) : (
+            <Link to='/sign-up' className='hp-btn hp-btn-d'>
+              {t('Get Started')}
+              <span className='bc'>
+                <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                  <path d='M2 6h8M6 2l4 4-4 4'/>
+                </svg>
+              </span>
+            </Link>
+          )}
+          <Link to='/pricing' className='hp-btn hp-btn-g'>
             {t('View Pricing')}
-          </Button>
+            <span className='bc'>
+              <svg viewBox='0 0 12 12' fill='none' stroke='currentColor' strokeWidth='2.5' strokeLinecap='round'>
+                <path d='M3 9L9 3M4 3h5v5'/>
+              </svg>
+            </span>
+          </Link>
         </div>
-      </AnimateInView>
+      </div>
     </section>
   )
 }
