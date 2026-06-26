@@ -40,11 +40,13 @@ const MODEL_ICONS = [
 ]
 
 export function Hero(props: HeroProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { status } = useStatus()
   const { logo: systemLogo, logoLoaded } = useSystemConfig()
-  const docsUrl =
+  const baseDocsUrl =
     (status?.docs_link as string | undefined) || 'https://doc.tokenjump.cc'
+  const lang = i18n.language?.split('-')[0] || 'en'
+  const docsUrl = `${baseDocsUrl}/${lang}`
 
   return (
     <section className='hp-hero'>
@@ -68,7 +70,7 @@ export function Hero(props: HeroProps) {
       {/* Title */}
       <h1 className='hp-h1'>
         <span className='w'>One</span>&nbsp;<span className='w'>jump,</span><br/>
-        <span className='w hl'>{t('boundless')}</span>&nbsp;<span className='w'>{t('flow.')}</span>
+        <span className='w hl'>boundless</span>&nbsp;<span className='w'>flow.</span>
       </h1>
 
       {/* Subtitle */}
