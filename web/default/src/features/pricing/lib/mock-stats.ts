@@ -763,6 +763,166 @@ const VIDEO_PARAMS: SupportedParameter[] = [
   },
 ]
 
+const JD_MULTIMODAL_VIDEO_PARAMS: SupportedParameter[] = [
+  // {
+  //   name: 'model',
+  //   type: 'string',
+  //   required: true,
+  //   descriptionKey:
+  //     'Model name: only Doubao-Seedance-2.0 model is supported',
+  // },
+  {
+    name: 'duration',
+    type: 'integer',
+    range: '4 ~ 12',
+    descriptionKey:
+      'Video duration in seconds. Supports integers in [4,12]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
+  },
+  {
+    name: 'ratio',
+    type: 'string',
+    enumValues: ['16:9', '4:3', '1:1', '3:4', '9:16', '21:9', 'adaptive'],
+    descriptionKey: 'Aspect ratio of the generated video',
+  },
+  {
+    name: 'generate_audio',
+    type: 'boolean',
+    descriptionKey: 'Whether to generate audio. true: yes, false: no',
+  },
+  {
+    name: 'watermark',
+    type: 'boolean',
+    defaultValue: false,
+    descriptionKey:
+      'Whether the generated video contains a watermark. false: no watermark, true: with watermark',
+  },
+]
+
+const JD_TEXT_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
+  // {
+  //   name: 'model',
+  //   type: 'string',
+  //   required: true,
+  //   descriptionKey:
+  //     'Model name: Doubao-Seedance-2.0, Doubao-seedance-1.0-pro-250528',
+  // },
+]
+
+const JD_IMAGE_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
+  // {
+  //   name: 'model',
+  //   type: 'string',
+  //   required: true,
+  //   descriptionKey:
+  //     'Model name: Doubao-seedance-1.0-pro-250528, Doubao-Seedance-2.0',
+  // }
+]
+
+const JD_IMAGE_TO_VIDEO_BODY_PARAMS2: SupportedParameter[] = [
+  {
+    name: 'first_frame',
+    type: 'string',
+    descriptionKey:
+      'URL of the first frame image for video generation.',
+  },
+  {
+    name: 'last_frame',
+    type: 'string',
+    descriptionKey:
+      'URL of the last frame image for video generation.',
+  },
+]
+
+const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
+  {
+    name: 'duration',
+    type: 'integer',
+    descriptionKey:
+      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,12]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
+  },
+  {
+    name: 'seed',
+    type: 'integer',
+    defaultValue: -1,
+    range: '-1 ~ 2^32-1',
+    descriptionKey:
+      'Seed integer for controlling randomness of generated content. Value range: [-1, 2^32-1]',
+  },
+  {
+    name: 'ratio',
+    type: 'string',
+    enumValues: ['16:9', '4:3', '1:1', '3:4', '9:16', '21:9', 'adaptive'],
+    descriptionKey:
+      'Aspect ratio of the generated video (Seedance 2.0). Enum values: 16:9, 4:3, 1:1, 3:4, 9:16, 21:9, adaptive',
+  },
+  {
+    name: 'resolution',
+    type: 'string',
+    defaultValue: '720p',
+    enumValues: ['480p', '720p', '1080p'],
+    descriptionKey:
+      'Video resolution (Seedance 2.0). Enum values: 480p, 720p, 1080p',
+  },
+  {
+    name: 'frames',
+    type: 'integer',
+    descriptionKey:
+      'Number of frames for the generated video (Seedance 2.0 & Seedance 1.5 pro not yet supported). Control video length flexibly through frames, supports decimal seconds. Formula: frames = duration × frame_rate(24). Value range: [29, 289] satisfying 25+4n format.',
+  },
+  {
+    name: 'camera_fixed',
+    type: 'boolean',
+    defaultValue: false,
+    enumValues: ['true', 'false'],
+    descriptionKey:
+      'Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)',
+  },
+  {
+    name: 'generate_audio',
+    type: 'boolean',
+    defaultValue: true,
+    descriptionKey:
+      'Control whether the generated video contains synchronized audio (Seedance 2.0 & Seedance 1.5 pro only). true: includes synchronized audio, false: silent video',
+  },
+  {
+    name: 'draft',
+    type: 'boolean',
+    defaultValue: false,
+    descriptionKey:
+      'Draft mode switch (Seedance 1.5 pro only). true: enable draft mode, generate preview video, consume fewer tokens. false: disable draft mode, generate normal video. Note: after enabling draft mode, use 480p resolution.',
+  },
+  {
+    name: 'service_tier',
+    type: 'string',
+    defaultValue: 'default',
+    enumValues: ['default', 'flex'],
+    descriptionKey:
+      'Service tier type (Seedance 1.5 pro only). default: online inference mode, lower RPM and concurrency quota. flex: offline inference mode, higher TPD quota.',
+  },
+  {
+    name: 'execution_expires_after',
+    type: 'integer',
+    defaultValue: 172800,
+    range: '3600 ~ 259200',
+    descriptionKey:
+      'Task timeout threshold in seconds (Seedance 1.5 pro only). Unit: seconds, calculated from creation time. Value range: [3600, 259200]. Default: 172800 (48 hours).',
+  },
+  {
+    name: 'watermark',
+    type: 'boolean',
+    defaultValue: false,
+    enumValues: ['false', 'true'],
+    descriptionKey:
+      'Whether the generated video contains a watermark. Enum values: false (no watermark), true (with watermark)',
+  },
+  {
+    name: 'tools',
+    type: 'array',
+    descriptionKey:
+      'Tools for the model to call (Seedance 2.0 only). type: tool type (web_search for internet search). After enabling, the model can autonomously search internet content based on prompts.',
+  },
+]
+
 type ApiCategory = 'reasoning' | 'embedding' | 'image' | 'video' | 'chat'
 
 /**
@@ -772,6 +932,14 @@ type ApiCategory = 'reasoning' | 'embedding' | 'image' | 'video' | 'chat'
  * need to distinguish them so the request-parameter table is accurate.
  */
 function apiCategoryOf(model: PricingModel): ApiCategory {
+  // custom_adapter_id 1/2/3 are all video generation adapters
+  if (
+    model.custom_adapter_id != null &&
+    model.custom_adapter_id >= 1 &&
+    model.custom_adapter_id <= 3
+  ) {
+    return 'video'
+  }
   const profile = PROFILE_BY_NAME(model.model_name)
   if (profile === 'embedding' || profile === 'reasoning') return profile
   if (profile === 'image') {
@@ -790,6 +958,11 @@ function apiCategoryOf(model: PricingModel): ApiCategory {
 export function buildSupportedParameters(
   model: PricingModel
 ): SupportedParameter[] {
+  if (model.custom_adapter_id === 1) return JD_MULTIMODAL_VIDEO_PARAMS
+  if (model.custom_adapter_id === 2)
+    return [...JD_TEXT_TO_VIDEO_BODY_PARAMS, ...JD_TEXT_TO_VIDEO_PARAMS_PARAMS]
+  if (model.custom_adapter_id === 3)
+    return [...JD_IMAGE_TO_VIDEO_BODY_PARAMS, ...JD_TEXT_TO_VIDEO_PARAMS_PARAMS, ...JD_IMAGE_TO_VIDEO_BODY_PARAMS2]
   const cat = apiCategoryOf(model)
   if (cat === 'reasoning') return REASONING_PARAMS
   if (cat === 'embedding') return EMBEDDING_PARAMS

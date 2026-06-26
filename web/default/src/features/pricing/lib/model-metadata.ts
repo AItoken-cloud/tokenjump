@@ -194,6 +194,15 @@ function inferOutputModalities(
   if (endpoints.some((e) => VIDEO_OUTPUT_ENDPOINTS.has(e))) set.add('video')
   if (endpoints.some((e) => EMBEDDING_ENDPOINTS.has(e))) set.add('text')
 
+  // custom_adapter_id 1/2/3 归类为视频生成模型
+  if (
+    model.custom_adapter_id != null &&
+    model.custom_adapter_id >= 1 &&
+    model.custom_adapter_id <= 3
+  ) {
+    set.add('video')
+  }
+
   if (
     model.audio_completion_ratio != null ||
     /tts|voice|audio-out/i.test(name)

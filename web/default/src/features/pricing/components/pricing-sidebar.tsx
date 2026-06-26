@@ -238,7 +238,19 @@ export function PricingSidebar(props: PricingSidebarProps) {
         label,
         count: countBy(
           props.models,
-          (model) => model.supported_endpoint_types?.includes(value) ?? false
+          (model) => {
+            if (model.supported_endpoint_types?.includes(value)) return true
+            // custom_adapter_id 1/2/3 are all video generation adapters
+            if (
+              value === ENDPOINT_TYPES.OPENAI_VIDEO &&
+              model.custom_adapter_id != null &&
+              model.custom_adapter_id >= 1 &&
+              model.custom_adapter_id <= 3
+            ) {
+              return true
+            }
+            return false
+          }
         ),
       })),
   ]

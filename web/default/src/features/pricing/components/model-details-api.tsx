@@ -507,78 +507,96 @@ function CodeSamplesSection(props: {
 
   const code = useMemo(() => {
     const apiKeyRef = '$TOKENJUMP_API_KEY'
+    const url = `${baseUrl}/v1/video/generations`
 
-    if (customAdaptorId === 1) {
+    const body1 = {
+      model: props.model.model_name,
+      prompt: 'Your prompt',
+      duration: 2,
+      metadata: {
+        ratio: '16:9',
+        generate_audio: false,
+        watermark: false,
+      },
+      videos: ['https://www.w3schools.com/html/movie.mp4'],
+      audios: ['https://filesamples.com/samples/audio/mp3/sample4.mp3',],
+      images: ['https://pics5.baidu.com/feed/023b5bb5c9ea15ce24be2ffd5e505efc3b87b256.jpeg@f_auto?token=f9168e7292671489b3f21931617d5d63',],
+    }
+
+    const body2 = {
+      model: props.model.model_name,
+      prompt: 'Your prompt',
+      duration: 5,
+      metadata: {
+        seed: -1,
+        ratio: '16:9',
+        resolution: '480p',
+        frames: 29,
+        camera_fixed: false,
+        generate_audio: false,
+        draft: false,
+        service_tier: 'default',
+        execution_expires_after: 3600,
+        watermark: false,
+        tools: [],
+      },
+    }
+
+    const body3 = {
+      model: props.model.model_name,
+      prompt: 'Your prompt',
+      duration: 5,
+      metadata: {
+        seed: -1,
+        ratio: '16:9',
+        resolution: '480p',
+        frames: 29,
+        camera_fixed: false,
+        generate_audio: false,
+        draft: false,
+        service_tier: 'default',
+        execution_expires_after: 3600,
+        watermark: false,
+        tools: [
+          {
+            type: 'web_search',
+          }
+        ],
+        first_frame: 'https://iknow-pic.cdn.bcebos.com/77c6a7efce1b9d16a367b1e1e1deb48f8d546489',
+        last_frame: 'https://iknow-pic.cdn.bcebos.com/9c16fdfaaf51f3ded51292e486eef01f3b297989',
+      },
+    }
+
+    const bodyMap: Record<number, object> = {
+      1: body1,
+      2: body2,
+      3: body3,
+    }
+
+    if (lang === 'curl' && bodyMap[customAdaptorId]) {
+      const body = bodyMap[customAdaptorId]
       return [
-        `curl -X POST "${baseUrl}/v1/video/generations" \\`,
+        `curl -X POST "${url}" \\`,
         `  -H "Authorization: Bearer ${apiKeyRef}" \\`,
         `  -H "Content-Type: application/json" \\`,
-        `  -d '{`,
-        `    "model": "${props.model.model_name}",`,
-        `    "prompt": "minimal test",`,
-        `    "duration": 2,`,
-        `	"metadata": {`,
-        `		"ratio": "16:9",`,
-        `		"generate_audio": false,`,
-        `		"watermark": false,`,
-        `	},`,
-        `	"videos": ["https://", ""],`,
-        `	"audios": ["https://", ""],`,
-        `	"images": ["https://", ""],`,
-        `  }'`,
+        `  -d '${JSON.stringify(body, null, 2).replace(/\n/g, '\n     ')}'`,
       ].join('\n')
     }
 
-    if (customAdaptorId === 2) {
+    if (lang === 'javascript' && bodyMap[customAdaptorId]) {
+      const body = bodyMap[customAdaptorId]
       return [
-        `curl -X POST "${baseUrl}/v1/video/generations" \\`,
-        `  -H "Authorization: Bearer ${apiKeyRef}" \\`,
-        `  -H "Content-Type: application/json" \\`,
-        `  -d '{`,
-        `    "model": "${props.model.model_name}",`,
-        `    "prompt": "minimal test",`,
-        `    "duration": 5,`,
-        `	"metadata": {`,
-        `	    "seed": -1,`,
-        `		"ratio": "16:9",`,
-        `		"resolution": "480p",`,
-        `		"frames":  29,`,
-        `		"camera_fixed": false,`,
-        `		"generate_audio": false,`,
-        `		"draft": false,`,
-        `		"service_tier": "default",`,
-        `		"execution_expires_after": 3600,`,
-        `		"watermark": false,`,
-        `		"tools": []`,
-        `	 }`,
-        `  }'`,
-      ].join('\n')
-    }
-
-    if (customAdaptorId === 3) {
-      return [
-        `curl -X POST "${baseUrl}/v1/video/generations" \\`,
-        `  -H "Authorization: Bearer ${apiKeyRef}" \\`,
-        `  -H "Content-Type: application/json" \\`,
-        `  -d '{`,
-        `    "model": "${props.model.model_name}",`,
-        `    "prompt": "minimal test",`,
-        `    "duration": 5,`,
-        `	   "images": ["https://"],`,
-        `	"metadata": {`,
-        `	    "seed": -1,`,
-        `		"ratio": "16:9",`,
-        `		"resolution": "480p",`,
-        `		"frames":  29,`,
-        `		"camera_fixed": false,`,
-        `		"generate_audio": false,`,
-        `		"draft": false,`,
-        `		"service_tier": "default",`,
-        `		"execution_expires_after": 3600,`,
-        `		"watermark": false,`,
-        `		"tools": []`,
-        `	 }`,
-        `  }'`,
+        `const response = await fetch('${url}', {`,
+        `  method: 'POST',`,
+        `  headers: {`,
+        `    Authorization: \`Bearer \${process.env.TOKENJUMP_API_KEY}\`,`,
+        `    'Content-Type': 'application/json',`,
+        `  },`,
+        `  body: JSON.stringify(${JSON.stringify(body, null, 2)}),`,
+        `})`,
+        ``,
+        `const data = await response.json()`,
+        `console.log(data)`,
       ].join('\n')
     }
 
