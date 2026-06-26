@@ -40,6 +40,14 @@ const PricingEndpointTypes = ({
   const getAllEndpointTypes = () => {
     const endpointTypes = new Set();
     (allModels.length > 0 ? allModels : models).forEach((model) => {
+      const isVideoAdapter =
+        model.custom_adapter_id != null &&
+        model.custom_adapter_id >= 1 &&
+        model.custom_adapter_id <= 3
+      if (isVideoAdapter) {
+        endpointTypes.add('openai-video');
+        return;
+      }
       if (
         model.supported_endpoint_types &&
         Array.isArray(model.supported_endpoint_types)
@@ -57,11 +65,18 @@ const PricingEndpointTypes = ({
     if (endpointType === 'all') {
       return models.length;
     }
-    return models.filter(
-      (model) =>
+    return models.filter((model) => {
+      const isVideoAdapter =
+        model.custom_adapter_id != null &&
+        model.custom_adapter_id >= 1 &&
+        model.custom_adapter_id <= 3
+      // custom_adapter_id 1/2/3 belong ONLY to video category
+      if (isVideoAdapter) return endpointType === 'openai-video'
+      return (
         model.supported_endpoint_types &&
-        model.supported_endpoint_types.includes(endpointType),
-    ).length;
+        model.supported_endpoint_types.includes(endpointType)
+      )
+    }).length;
   };
 
   // 端点类型显示名称映射

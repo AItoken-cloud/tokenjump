@@ -94,17 +94,13 @@ export function filterByEndpointType(
 ): PricingModel[] {
   if (endpointType === ENDPOINT_TYPES.ALL) return models
   return models.filter((m) => {
-    if (m.supported_endpoint_types?.includes(endpointType)) return true
-    // custom_adapter_id 1/2/3 are all video generation adapters
-    if (
-      endpointType === ENDPOINT_TYPES.OPENAI_VIDEO &&
+    const isVideoAdapter =
       m.custom_adapter_id != null &&
       m.custom_adapter_id >= 1 &&
       m.custom_adapter_id <= 3
-    ) {
-      return true
-    }
-    return false
+    // custom_adapter_id 1/2/3 belong ONLY to video category
+    if (isVideoAdapter) return endpointType === ENDPOINT_TYPES.OPENAI_VIDEO
+    return m.supported_endpoint_types?.includes(endpointType) ?? false
   })
 }
 

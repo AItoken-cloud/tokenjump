@@ -239,17 +239,13 @@ export function PricingSidebar(props: PricingSidebarProps) {
         count: countBy(
           props.models,
           (model) => {
-            if (model.supported_endpoint_types?.includes(value)) return true
-            // custom_adapter_id 1/2/3 are all video generation adapters
-            if (
-              value === ENDPOINT_TYPES.OPENAI_VIDEO &&
+            const isVideoAdapter =
               model.custom_adapter_id != null &&
               model.custom_adapter_id >= 1 &&
               model.custom_adapter_id <= 3
-            ) {
-              return true
-            }
-            return false
+            // custom_adapter_id 1/2/3 belong ONLY to video category
+            if (isVideoAdapter) return value === ENDPOINT_TYPES.OPENAI_VIDEO
+            return model.supported_endpoint_types?.includes(value) ?? false
           }
         ),
       })),

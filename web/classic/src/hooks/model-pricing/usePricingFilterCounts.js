@@ -62,11 +62,19 @@ export const usePricingFilterCounts = ({
 
     // 端点类型
     if (!ignore.includes('endpoint') && filterEndpointType !== 'all') {
+      const isVideoAdapter =
+        model.custom_adapter_id != null &&
+        model.custom_adapter_id >= 1 &&
+        model.custom_adapter_id <= 3
+      // custom_adapter_id 1/2/3 belong ONLY to video category
+      if (isVideoAdapter) {
+        return filterEndpointType === 'openai-video'
+      }
       if (
         !model.supported_endpoint_types ||
         !model.supported_endpoint_types.includes(filterEndpointType)
       )
-        return false;
+        return false
     }
 
     // 供应商
