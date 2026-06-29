@@ -46,7 +46,8 @@ export function Hero(props: HeroProps) {
   const baseDocsUrl =
     (status?.docs_link as string | undefined) || 'https://doc.tokenjump.cc'
   const lang = i18n.language?.split('-')[0] || 'en'
-  const docsUrl = `${baseDocsUrl}/${lang}`
+  const docsLang = ['zh', 'en', 'ja'].includes(lang) ? lang : 'en'
+  const docsUrl = `${baseDocsUrl}/${docsLang}`
 
   return (
     <section className='hp-hero'>
@@ -124,7 +125,7 @@ export function Hero(props: HeroProps) {
 
       {/* Model strip */}
       <div className='hp-mstrip'>
-        <span className='hp-mstrip-lbl'>{t('30+ Mainstream Models Integrated')}</span>
+        <span className='hp-mstrip-lbl'>{t('Continuously Integrating 30+ Mainstream Models')}</span>
         <div className='hp-mpills'>
           {MODEL_ICONS.map((model) => (
             <div key={model.name} className='hp-mpill'>
@@ -133,9 +134,9 @@ export function Hero(props: HeroProps) {
               <span className='hp-ldot'></span>
             </div>
           ))}
-          <div className='hp-mpill' style={{color: 'var(--hp-ink4)', borderStyle: 'dashed'}}>
+          {/* <div className='hp-mpill' style={{color: 'var(--hp-ink4)', borderStyle: 'dashed'}}>
             + 22 {t('more')}
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

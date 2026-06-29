@@ -42,7 +42,7 @@ export type TopNavLink = {
  * }
  */
 export function useTopNavLinks(): TopNavLink[] {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { status } = useStatus()
   const { auth } = useAuthStore()
 
@@ -87,7 +87,12 @@ export function useTopNavLinks(): TopNavLink[] {
   // Docs (supports external links)
   if (modules?.docs !== false) {
     if (docsLink) {
-      links.push({ title: t('Docs'), href: docsLink, external: true })
+      const lang = i18n.language?.split('-')[0] || 'en'
+      const docsLang = ['zh', 'en', 'ja'].includes(lang) ? lang : 'en'
+      const docsHref = docsLink.endsWith('/')
+        ? `${docsLink}${docsLang}/`
+        : `${docsLink}/${docsLang}`
+      links.push({ title: t('Docs'), href: docsHref, external: true })
     } else {
       links.push({ title: t('Docs'), href: '/docs' })
     }
