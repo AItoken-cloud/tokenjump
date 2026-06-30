@@ -57,6 +57,14 @@ For commercial licensing, please contact support@quantumnous.com
   background: var(--background);
 }
 
+.hp-page-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* ── Tech-style decorative ring group ── */
 .hp-deco {
   position: absolute;

@@ -20,6 +20,7 @@ import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useSystemConfig } from '@/hooks/use-system-config'
 import { Skeleton } from '@/components/ui/skeleton'
+import { HomePageBackground } from '@/components/home-page-background'
 
 type AuthLayoutProps = {
   children: React.ReactNode
@@ -31,6 +32,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
 
   return (
     <div className='relative grid h-svh max-w-none'>
+      <HomePageBackground />
       <Link
         to='/'
         className='absolute top-4 left-4 z-10 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8'
