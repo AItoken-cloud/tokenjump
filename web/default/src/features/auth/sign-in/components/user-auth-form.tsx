@@ -332,7 +332,7 @@ export function UserAuthForm({
         className={cn('grid gap-4', className)}
         {...props}
       >
-        {hasAlternativeLogin && alternativeLoginMethods}
+        {/* {hasAlternativeLogin && alternativeLoginMethods} */}
 
         {passwordLoginEnabled && (
           <>
@@ -419,7 +419,7 @@ export function UserAuthForm({
           className='mt-1'
         />
 
-        {!hasAlternativeLogin && alternativeLoginMethods}
+        {/* {!hasAlternativeLogin && alternativeLoginMethods} */}
       </form>
 
       {hasWeChatLogin && (

@@ -192,7 +192,7 @@ export function PasskeySection(props: PasskeySectionProps) {
             onSave={form.handleSubmit(onSubmit)}
             isSaving={updateOption.isPending}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name='passkey.enabled'
             render={({ field }) => (
@@ -213,7 +213,7 @@ export function PasskeySection(props: PasskeySectionProps) {
                 </FormControl>
               </SettingsSwitchItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}

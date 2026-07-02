@@ -154,7 +154,7 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
             />
             <FormDirtyIndicator isDirty={isDirty} />
             <SettingsFormGrid>
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name='theme.frontend'
                 render={({ field }) => (
@@ -184,9 +184,9 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                           <SelectItem value='default'>
                             {t('Default (New Frontend)')}
                           </SelectItem>
-                          {/* <SelectItem value='classic'>
+                          <SelectItem value='classic'>
                             {t('Classic (Legacy Frontend)')}
-                          </SelectItem> */}
+                          </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -198,7 +198,7 @@ export function SystemInfoSection({ defaultValues }: SystemInfoSectionProps) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}
