@@ -57,7 +57,6 @@ type requestPayload struct {
 type responseTask struct {
 	TaskId     string                           `json:"task_id"`
 	TaskStatus string                           `json:"task_status"`
-	Content    []multiLiveVideoContentItem      `json:"content"`
 	Parameters *multiLiveVideoRequestParameters `json:"parameters,omitempty"`
 	Error      struct {
 		Type    string `json:"type"`
@@ -72,6 +71,7 @@ type responseTask struct {
 			WebSearch int `json:"web_search"`
 		} `json:"tool_usage"`
 	} `json:"usage"`
+	Content []ResponseContentItem `json:"content"`
 }
 
 // ============================
@@ -215,15 +215,6 @@ func (a *JdDoubaoLiveVideoAdaptor) DoRequest(c *gin.Context, info *relaycommon.R
 	return channel.DoTaskApiRequest(a, c, info, requestBody)
 }
 
-func extractVideoURL(content []multiLiveVideoContentItem) string {
-	for _, item := range content {
-		if item.Type == "video_url" && item.VideoURL != nil && item.VideoURL.URL != "" {
-			return item.VideoURL.URL
-		}
-	}
-	return ""
-}
-
 func (a *JdDoubaoLiveVideoAdaptor) ConvertToOpenAIVideo(originTask *model.Task) ([]byte, error) {
 	var dResp responseTask
 	if err := common.Unmarshal(originTask.Data, &dResp); err != nil {
@@ -235,7 +226,9 @@ func (a *JdDoubaoLiveVideoAdaptor) ConvertToOpenAIVideo(originTask *model.Task) 
 	openAIVideo.TaskID = originTask.TaskID
 	openAIVideo.Status = originTask.Status.ToVideoStatus()
 	openAIVideo.SetProgressStr(originTask.Progress)
-	openAIVideo.SetMetadata("url", extractVideoURL(dResp.Content))
+	if len(dResp.Content) > 0 && dResp.Content[0].VideoURL != nil {
+		openAIVideo.SetMetadata("url", dResp.Content[0].VideoURL.URL)
+	}
 	openAIVideo.CreatedAt = originTask.CreatedAt
 	openAIVideo.CompletedAt = originTask.UpdatedAt
 	openAIVideo.Model = originTask.Properties.OriginModelName

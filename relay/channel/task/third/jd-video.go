@@ -120,6 +120,12 @@ type responsePayloadResult struct {
 type fetchTaskPayload struct {
 	TaskID string `json:"taskId"`
 }
+
+type ResponseContentItem struct {
+	Id       string    `json:"id"`
+	VideoURL *MediaURL `json:"video_url,omitempty"`
+}
+
 type fetchTaskResult struct {
 	TaskId     string `json:"task_id"`
 	TaskStatus string `json:"task_status"`
@@ -136,7 +142,7 @@ type fetchTaskResult struct {
 			WebSearch int `json:"web_search"`
 		} `json:"tool_usage"`
 	} `json:"usage"`
-	VideoURL string `json:"video_url"`
+	Content []ResponseContentItem `json:"content"`
 }
 
 type cancelTaskPayload struct {
@@ -312,7 +318,9 @@ func (*JdDoubaoVideoCommonAdaptor) ParseTaskResult(respBody []byte) (*relaycommo
 	case "success":
 		taskResult.Status = model.TaskStatusSuccess
 		taskResult.Progress = "100%"
-		taskResult.Url = resTask.VideoURL
+		if len(resTask.Content) > 0 && resTask.Content[0].VideoURL != nil {
+			taskResult.Url = resTask.Content[0].VideoURL.URL
+		}
 		taskResult.CompletionTokens = resTask.Usage.VideoOutput
 		taskResult.TotalTokens = resTask.Usage.VideoOutput
 	case "failed":
