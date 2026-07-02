@@ -228,6 +228,7 @@ export function useTaskLogsColumns(isAdmin: boolean): ColumnDef<TaskLog>[] {
       cell: function DetailsCell({ row }) {
         const log = row.original
         const failReason = row.getValue('fail_reason') as string
+        const resultUrl = row.getValue('result_url') as string
         const status = log.status
         const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -254,10 +255,12 @@ export function useTaskLogsColumns(isAdmin: boolean): ColumnDef<TaskLog>[] {
           log.action === TASK_ACTIONS.REFERENCE_GENERATE ||
           log.action === TASK_ACTIONS.REMIX_GENERATE
         const isSuccess = status === TASK_STATUS.SUCCESS
-        const isUrl = failReason?.startsWith('http')
-
+        // const isFail = status === TASK_STATUS.FAILURE // 失败
+        // const isUrl = failReason?.startsWith('http')
+        const isUrl = resultUrl?.startsWith('https')
         if (isSuccess && isVideoTask && isUrl) {
-          const videoUrl = `/v1/videos/${log.task_id}/content`
+          // const videoUrl = `/v1/videos/${log.task_id}/content`
+          const videoUrl = resultUrl
           return (
             <a
               href={videoUrl}
@@ -270,10 +273,9 @@ export function useTaskLogsColumns(isAdmin: boolean): ColumnDef<TaskLog>[] {
           )
         }
 
-        if (!failReason) {
-          return <span className='text-muted-foreground/60 text-xs'>-</span>
-        }
-
+        // if (!resultUrl) {
+        //   return <span className='text-muted-foreground/60 text-xs'>-</span>
+        // }
         return (
           <>
             <button
