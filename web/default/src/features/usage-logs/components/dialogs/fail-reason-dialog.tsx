@@ -49,9 +49,9 @@ export function FailReasonDialog({
       <DialogContent className='sm:max-w-lg'>
         <DialogHeader>
           <DialogTitle>{t('Fail Reason Details')}</DialogTitle>
-          <DialogDescription>
+          {/* <DialogDescription>
             {t('View the complete error message and details')}
-          </DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
 
         <ScrollArea className='max-h-[500px] pr-4'>

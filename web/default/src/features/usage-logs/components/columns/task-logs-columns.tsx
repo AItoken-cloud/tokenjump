@@ -292,7 +292,7 @@ export function useTaskLogsColumns(isAdmin: boolean): ColumnDef<TaskLog>[] {
               </span>
             </button>
             <FailReasonDialog
-              failReason={failReason}
+              failReason={failReason || ''}
               open={dialogOpen}
               onOpenChange={setDialogOpen}
             />
