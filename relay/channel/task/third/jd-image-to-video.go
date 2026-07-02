@@ -58,7 +58,6 @@ type ImageToVideoRequestPayload struct {
 type ImageToVideoResponseTask struct {
 	TaskId     string                        `json:"task_id"`
 	TaskStatus string                        `json:"task_status"`
-	Content    []imageToVideoContentItem     `json:"content"`
 	Parameters *imageToVideoRequestParameter `json:"parameters,omitempty"`
 	Error      struct {
 		Type    string `json:"type"`
@@ -73,7 +72,7 @@ type ImageToVideoResponseTask struct {
 			WebSearch int `json:"web_search"`
 		} `json:"tool_usage"`
 	} `json:"usage"`
-	VideoURL string `json:"video_url"`
+	Content []ResponseContentItem `json:"content"`
 }
 
 // ============================
@@ -198,7 +197,9 @@ func (a *JdDoubaoImageToVideoAdaptor) ConvertToOpenAIVideo(originTask *model.Tas
 	openAIVideo.TaskID = originTask.TaskID
 	openAIVideo.Status = originTask.Status.ToVideoStatus()
 	openAIVideo.SetProgressStr(originTask.Progress)
-	openAIVideo.SetMetadata("url", dResp.VideoURL)
+	if len(dResp.Content) > 0 && dResp.Content[0].VideoURL != nil {
+		openAIVideo.SetMetadata("url", dResp.Content[0].VideoURL.URL)
+	}
 	openAIVideo.CreatedAt = originTask.CreatedAt
 	openAIVideo.CompletedAt = originTask.UpdatedAt
 	openAIVideo.Model = originTask.Properties.OriginModelName
