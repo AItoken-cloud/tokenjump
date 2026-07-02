@@ -215,6 +215,7 @@ export interface MidjourneyLog {
   finish_time?: number // milliseconds
   start_time?: number // milliseconds
   fail_reason?: string
+  result_url?: string
   progress: string
   prompt: string
   prompt_en?: string
@@ -246,6 +247,7 @@ export interface TaskLog {
   progress_message_en?: string
   data?: string // JSON string
   fail_reason?: string
+  result_url?: string
   status: string // NOT_START, SUBMITTED, IN_PROGRESS, SUCCESS, FAILURE, QUEUED, UNKNOWN
   other?: string
   created_at?: number
