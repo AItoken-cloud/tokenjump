@@ -60,6 +60,9 @@ export type PricingModel = {
    * and are populated client-side from {@link inferModelMetadata}.
    * When the backend ships these fields, the inference layer becomes a
    * fallback rather than the source of truth.
+  /**
+   * Optional model metadata fields reserved for backend-provided catalog data.
+   * Keep them data-driven; do not synthesize display values on the client.
    */
   context_length?: number
   max_output_tokens?: number

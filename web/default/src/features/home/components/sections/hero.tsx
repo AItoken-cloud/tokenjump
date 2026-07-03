@@ -21,6 +21,11 @@ import { useTranslation } from 'react-i18next'
 import { useStatus } from '@/hooks/use-status'
 import { useSystemConfig } from '@/hooks/use-system-config'
 import { getLobeIcon } from '@/lib/lobe-icon'
+import { CherryStudio } from '@lobehub/icons'
+import { ArrowRight, BookOpen } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+
+import { HeroTerminalDemo } from '../hero-terminal-demo'
 
 interface HeroProps {
   className?: string

@@ -19,6 +19,9 @@ For commercial licensing, please contact support@quantumnous.com
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
+import { AnimateInView } from '@/components/animate-in-view'
+import { Button } from '@/components/ui/button'
+
 interface CTAProps {
   className?: string
   isAuthenticated?: boolean

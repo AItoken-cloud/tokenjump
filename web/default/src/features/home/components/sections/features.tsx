@@ -18,6 +18,8 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { useTranslation } from 'react-i18next'
 
+import { AnimateInView } from '@/components/animate-in-view'
+
 interface FeaturesProps {
   className?: string
 }
