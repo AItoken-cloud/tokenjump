@@ -224,7 +224,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
+        {/* <DropdownMenuItem
           onSelect={(event) => {
             event.preventDefault()
             setResetPasskeyOpen(true)
@@ -235,7 +235,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           <DropdownMenuShortcut>
             <KeyRound size={16} />
           </DropdownMenuShortcut>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
 
         <DropdownMenuItem
           onSelect={(event) => {
