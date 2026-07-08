@@ -4991,7 +4991,7 @@
     "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)": "是否固定摄像头（仅Seedance 2.0暂不支持）。枚举值：true（固定摄像头）、false（不固定）",
     "Whether to generate audio. true: yes, false: no": "是否生成音频。true: 是，false: 否",
     "Whether to generate the final advertisement audio (background music + voiceover).": "是否生成最终广告音频（背景音乐+口播）。",
-    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more": "是否返回生成视频的尾帧图像。true：返回 PNG 格式尾帧图像，可用于作为下一个视频任务的首帧；f... 查看更多",
+    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.": "是否返回生成视频的尾帧图像。true：返回 PNG 格式尾帧图像，可用于作为下一个视频任务的首帧；false：不返回。",
     "Whitelist": "白名单",
     "Whitelist (Only allow listed domains)": "白名单（仅允许列出的域）",
     "Whitelist (Only allow listed IPs)": "白名单（仅允许列出的 IP）",

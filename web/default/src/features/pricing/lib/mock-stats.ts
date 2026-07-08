@@ -888,7 +888,7 @@ const JD_MULTIMODAL_VIDEO_FAST_PARAMS: SupportedParameter[] = [
     name: 'metadata.return_last_frame',
     type: 'boolean',
     descriptionKey:
-      'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more',
+      'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.',
   },
   {
     name: 'videos',
@@ -919,7 +919,7 @@ const JD_MULTIMODAL_VIDEO_FAST_PARAMS: SupportedParameter[] = [
   //   name: 'return_last_frame',
   //   type: 'boolean',
   //   descriptionKey:
-  //     'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more',
+  //     'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.',
   // },
   // {
   //   name: 'resolution',

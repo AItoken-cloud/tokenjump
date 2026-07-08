@@ -4991,7 +4991,7 @@
     "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)": "Фиксировать камеру или нет (Seedance 2.0 пока не поддерживается). Значения: true (фиксированная камера), false (не фиксирована)",
     "Whether to generate audio. true: yes, false: no": "Генерировать аудио. true: да, false: нет",
     "Whether to generate the final advertisement audio (background music + voiceover).": "Генерировать ли финальное рекламное аудио (фоновая музыка + голос за кадром).",
-    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more": "Возвращать ли изображение последнего кадра сгенерированного видео. true: возвращает изображение последнего кадра в формате PNG, которое можно использовать как первый кадр следующей видео задачи; f... Подробнее",
+    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.": "Возвращать ли изображение последнего кадра сгенерированного видео. true: возвращает изображение последнего кадра в формате PNG, которое можно использовать как первый кадр следующей видео задачи; false: не возвращать.",
     "Whitelist": "Белый список",
     "Whitelist (Only allow listed domains)": "Белый список (Разрешить только указанные домены)",
     "Whitelist (Only allow listed IPs)": "Белый список (Разрешить только указанные IP-адреса)",

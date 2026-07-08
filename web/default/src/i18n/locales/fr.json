@@ -4991,7 +4991,7 @@
     "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)": "Fixer la caméra ou non (Seedance 2.0 non encore pris en charge). Valeurs : true (caméra fixe), false (non fixe)",
     "Whether to generate audio. true: yes, false: no": "Générer l'audio. true : oui, false : non",
     "Whether to generate the final advertisement audio (background music + voiceover).": "Générer l'audio publicitaire final (musique de fond + voix off).",
-    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more": "Retourner l'image de la dernière frame de la vidéo générée. true : renvoie une image au format PNG de la dernière frame, qui peut être utilisée comme première frame de la prochaine tâche vidéo ; f... Voir plus",
+    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.": "Retourner l'image de la dernière frame de la vidéo générée. true : renvoie une image PNG de la dernière frame, utilisable comme première frame de la prochaine tâche vidéo ; false : ne pas retourner.",
     "Whitelist": "Liste blanche",
     "Whitelist (Only allow listed domains)": "Liste blanche (Autoriser uniquement les domaines listés)",
     "Whitelist (Only allow listed IPs)": "Liste blanche (Autoriser uniquement les adresses IP listées)",

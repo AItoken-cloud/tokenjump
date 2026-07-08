@@ -4991,7 +4991,7 @@
     "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)": "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)",
     "Whether to generate audio. true: yes, false: no": "Whether to generate audio. true: yes, false: no",
     "Whether to generate the final advertisement audio (background music + voiceover).": "Whether to generate the final advertisement audio (background music + voiceover).",
-    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more": "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more",
+    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.": "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.",
     "Whitelist": "Whitelist",
     "Whitelist (Only allow listed domains)": "Whitelist (Only allow listed domains)",
     "Whitelist (Only allow listed IPs)": "Whitelist (Only allow listed IPs)",

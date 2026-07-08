@@ -4991,7 +4991,7 @@
     "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)": "カメラを固定するかどうか（Seedance 2.0は未対応）。列挙値：true（固定カメラ）、false（固定なし）",
     "Whether to generate audio. true: yes, false: no": "音声を生成するかどうか。true: 生成する、false: 生成しない",
     "Whether to generate the final advertisement audio (background music + voiceover).": "最終広告オーディオ（BGM+ナレーション）を生成するかどうか。",
-    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more": "生成動画の最終フレーム画像を返すかどうか。true: PNG形式の最終フレーム画像を返し、次の動画タスクの最初のフレームとして使用できます；f... 続きを読む",
+    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.": "生成動画の最終フレーム画像を返すかどうか。true: PNG形式の最終フレーム画像を返し、次の動画タスクの最初のフレームとして使用できます；false: 返さない。",
     "Whitelist": "ホワイトリスト",
     "Whitelist (Only allow listed domains)": "ホワイトリスト (リストされたドメインのみを許可)",
     "Whitelist (Only allow listed IPs)": "ホワイトリスト (リストされたIPのみを許可)",

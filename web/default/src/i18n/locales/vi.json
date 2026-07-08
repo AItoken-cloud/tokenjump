@@ -4991,7 +4991,7 @@
     "Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)": "Có cố định camera hay không (Seedance 2.0 chưa được hỗ trợ). Giá trị: true (camera cố định), false (không cố định)",
     "Whether to generate audio. true: yes, false: no": "Có tạo âm thanh hay không. true: có, false: không",
     "Whether to generate the final advertisement audio (background music + voiceover).": "Có tạo âm thanh quảng cáo cuối cùng (nhạc nền + lồng tiếng) hay không.",
-    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more": "Có trả về hình ảnh khung cuối cùng của video được tạo hay không. true: trả về hình ảnh khung cuối cùng định dạng PNG, có thể dùng làm khung đầu tiên của tác vụ video tiếp theo; f... Xem thêm",
+    "Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; false: do not return.": "Có trả về hình ảnh khung cuối cùng của video được tạo hay không. true: trả về hình ảnh khung cuối cùng định dạng PNG, có thể dùng làm khung đầu tiên của tác vụ video tiếp theo; false: không trả về.",
     "Whitelist": "Danh sách trắng",
     "Whitelist (Only allow listed domains)": "Danh sách trắng (Chỉ cho phép các tên miền được liệt kê)",
     "Whitelist (Only allow listed IPs)": "Danh sách trắng (Chỉ cho phép các IP đã liệt kê)",
