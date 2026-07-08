@@ -53,26 +53,6 @@ type TextToVideoRequestPayload struct {
 	Parameters *textToVideoRequestParameters `json:"parameters,omitempty"`
 }
 
-type TextToVideoResponseTask struct {
-	TaskId     string                        `json:"task_id"`
-	TaskStatus string                        `json:"task_status"`
-	Parameters *textToVideoRequestParameters `json:"parameters,omitempty"`
-	Error      struct {
-		Type    string `json:"type"`
-		Code    int    `json:"code"`
-		Message string `json:"message"`
-	} `json:"error"`
-	Usage struct {
-		VideoOutput   int    `json:"video_output"`
-		HasVideoInput bool   `json:"has_video_input"`
-		Resolution    string `json:"resolution"`
-		ToolUsage     struct {
-			WebSearch int `json:"web_search"`
-		} `json:"tool_usage"`
-	} `json:"usage"`
-	Content []ResponseContentItem `json:"content"`
-}
-
 // ============================
 // Adaptor implementation
 // ============================
@@ -157,7 +137,7 @@ func (a *JdDoubaoTextToVideoAdaptor) DoRequest(c *gin.Context, info *relaycommon
 }
 
 func (a *JdDoubaoTextToVideoAdaptor) ConvertToOpenAIVideo(originTask *model.Task) ([]byte, error) {
-	var dResp TextToVideoResponseTask
+	var dResp fetchTaskResult
 	if err := common.Unmarshal(originTask.Data, &dResp); err != nil {
 		return nil, errors.Wrap(err, "unmarshal doubao task data failed")
 	}
