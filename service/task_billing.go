@@ -232,16 +232,17 @@ func RecalculateTaskQuota(ctx context.Context, task *model.Task, actualQuota int
 	other["pre_consumed_quota"] = preConsumedQuota
 	other["actual_quota"] = actualQuota
 	model.RecordTaskBillingLog(model.RecordTaskBillingLogParams{
-		UserId:    task.UserId,
-		LogType:   logType,
-		Content:   reason,
-		ChannelId: task.ChannelId,
-		ModelName: taskModelName(task),
-		Quota:     logQuota,
-		TokenId:   task.PrivateData.TokenId,
-		Group:     task.Group,
-		Other:     other,
-		NodeName:  task.PrivateData.NodeName,
+		UserId:      task.UserId,
+		LogType:     logType,
+		Content:     reason,
+		ChannelId:   task.ChannelId,
+		ModelName:   taskModelName(task),
+		Quota:       logQuota,
+		TotalTokens: task.TotalTokens,
+		TokenId:     task.PrivateData.TokenId,
+		Group:       task.Group,
+		Other:       other,
+		NodeName:    task.PrivateData.NodeName,
 	})
 }
 

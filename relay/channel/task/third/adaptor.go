@@ -9,6 +9,7 @@ const (
 	AdaptorChannelTypeDoubaoLiveVideo    = 1
 	AdaptorChannelTypeDoubaoTextToVideo  = 2
 	AdaptorChannelTypeDoubaoImageToVideo = 3
+	AdaptorChannelTypeDoubaoDance        = 4
 )
 
 // GetAdaptor returns the appropriate adaptor based on channel type
@@ -20,6 +21,8 @@ func GetThirdAdaptor(channelType int) channel.TaskAdaptor {
 		return &JdDoubaoTextToVideoAdaptor{}
 	case AdaptorChannelTypeDoubaoImageToVideo:
 		return &JdDoubaoImageToVideoAdaptor{}
+	case AdaptorChannelTypeDoubaoDance:
+		return &JdDoubaoLiveVideoDanceAdaptor{}
 	}
 	return nil
 }

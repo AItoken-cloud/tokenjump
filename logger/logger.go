@@ -39,6 +39,25 @@ func GetCurrentLogPath() string {
 	return currentLogPath
 }
 
+func findNextLogSequence(logDir, nodeName, date string) int {
+	prefix := fmt.Sprintf("%s-%s-", nodeName, date)
+	files, err := filepath.Glob(filepath.Join(logDir, prefix+"*.log"))
+	if err != nil {
+		return 1
+	}
+	maxSeq := 0
+	for _, file := range files {
+		base := filepath.Base(file)
+		seqStr := base[len(prefix) : len(base)-len(".log")]
+		var seq int
+		_, err := fmt.Sscanf(seqStr, "%d", &seq)
+		if err == nil && seq > maxSeq {
+			maxSeq = seq
+		}
+	}
+	return maxSeq + 1
+}
+
 func SetupLogger() {
 	defer func() {
 		setupLogWorking = false
@@ -52,8 +71,10 @@ func SetupLogger() {
 		defer func() {
 			setupLogLock.Unlock()
 		}()
-		logPath := filepath.Join(*common.LogDir, fmt.Sprintf("%s-%s.log", common.NodeName, time.Now().Format("20060102")))
-		fd, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		date := time.Now().Format("20060102")
+		seq := findNextLogSequence(*common.LogDir, common.NodeName, date)
+		logPath := filepath.Join(*common.LogDir, fmt.Sprintf("%s-%s-%d.log", common.NodeName, date, seq))
+		fd, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			log.Fatal("failed to open log file")
 		}
