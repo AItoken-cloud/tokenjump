@@ -562,13 +562,15 @@ function CodeSamplesSection(props: {
     }
 
     const body4 = {
-      model: 'Doubao-Seedance-2.0-Fast',
+      model: 'Doubao-Seedance-2.0',
       prompt: 'Your prompt',
       duration: 2,
       metadata: {
+        resolution: "480p",
         ratio: '16:9',
         generate_audio: false,
         watermark: false,
+		    return_last_frame: false
       },
       videos: ['https://www.w3schools.com/html/movie.mp4'],
       audios: ['https://filesamples.com/samples/audio/mp3/sample4.mp3',],

@@ -764,13 +764,18 @@ const VIDEO_PARAMS: SupportedParameter[] = [
 ]
 
 const JD_MULTIMODAL_VIDEO_PARAMS: SupportedParameter[] = [
-  // {
-  //   name: 'model',
-  //   type: 'string',
-  //   required: true,
-  //   descriptionKey:
-  //     'Model name: only Doubao-Seedance-2.0 model is supported',
-  // },
+  {
+    name: 'model',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Model name',
+  },
+  {
+    name: 'prompt',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Prompt text',
+  },
   {
     name: 'duration',
     type: 'integer',
@@ -779,135 +784,78 @@ const JD_MULTIMODAL_VIDEO_PARAMS: SupportedParameter[] = [
       'Video duration in seconds. Supports integers in [4,12]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
   },
   {
-    name: 'ratio',
+    name: 'metadata',
+    type: 'object',
+    descriptionKey:
+      'Metadata object containing video generation configuration parameters.',
+  },
+  {
+    name: 'metadata.ratio',
     type: 'string',
     enumValues: ['16:9', '4:3', '1:1', '3:4', '9:16', '21:9', 'adaptive'],
     descriptionKey: 'Aspect ratio of the generated video',
   },
   {
-    name: 'generate_audio',
+    name: 'metadata.generate_audio',
     type: 'boolean',
     descriptionKey: 'Whether to generate audio. true: yes, false: no',
   },
   {
-    name: 'watermark',
+    name: 'metadata.watermark',
     type: 'boolean',
     defaultValue: false,
     descriptionKey:
       'Whether the generated video contains a watermark. false: no watermark, true: with watermark',
+  },
+  {
+    name: 'videos',
+    type: 'array',
+    descriptionKey:
+      'Array of video URLs. Provide reference video materials for the model.',
+  },
+  {
+    name: 'audios',
+    type: 'array',
+    descriptionKey:
+      'Array of audio URLs. Provide reference audio materials for the model.',
+  },
+  {
+    name: 'images',
+    type: 'array',
+    descriptionKey:
+      'Array of image URLs. Provide reference image materials for the model.',
   },
 ]
 
 // custom_adapter_id === 4: same as id=1 plus content, return_last_frame, resolution
 const JD_MULTIMODAL_VIDEO_FAST_PARAMS: SupportedParameter[] = [
   {
-    name: 'content',
-    type: 'array',
-    required: true,
-    descriptionKey:
-      'Array of video content elements. Each element represents a text, image, video or audio reference.',
-  },
-  {
-    name: 'generate_audio',
-    type: 'boolean',
-    required: true,
-    descriptionKey:
-      'Whether to generate the final advertisement audio (background music + voiceover).',
-  },
-  {
-    name: 'ratio',
+    name: 'model',
     type: 'string',
     required: true,
-    enumValues: ['16:9', '9:16', '1:1', '4:3', '3:4'],
-    descriptionKey:
-      'Video aspect ratio. Supported values: 16:9, 9:16, 1:1, 4:3, 3:4.',
+    descriptionKey: 'Model name',
+  },
+  {
+    name: 'prompt',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Prompt text',
   },
   {
     name: 'duration',
     type: 'integer',
-    required: true,
-    descriptionKey: 'Total video duration in seconds.',
-  },
-  {
-    name: 'watermark',
-    type: 'boolean',
-    required: true,
-    descriptionKey: 'Whether to add platform watermark.',
-  },
-  {
-    name: 'return_last_frame',
-    type: 'boolean',
+    range: '4 ~ 12',
     descriptionKey:
-      'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more',
+      'Video duration in seconds. Supports integers in [4,12]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
   },
   {
-    name: 'resolution',
-    type: 'string',
-    enumValues: ['480p', '720p', '1080p'],
+    name: 'metadata',
+    type: 'object',
     descriptionKey:
-      'Output video resolution. Available values: 480p, 720p, 1080p.',
-  },
-]
-
-const JD_TEXT_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
-  // {
-  //   name: 'model',
-  //   type: 'string',
-  //   required: true,
-  //   descriptionKey:
-  //     'Model name: Doubao-Seedance-2.0, Doubao-seedance-1.0-pro-250528',
-  // },
-]
-
-const JD_IMAGE_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
-  // {
-  //   name: 'model',
-  //   type: 'string',
-  //   required: true,
-  //   descriptionKey:
-  //     'Model name: Doubao-seedance-1.0-pro-250528, Doubao-Seedance-2.0',
-  // }
-]
-
-const JD_IMAGE_TO_VIDEO_BODY_PARAMS2: SupportedParameter[] = [
-  {
-    name: 'first_frame',
-    type: 'string',
-    descriptionKey:
-      'URL of the first frame image for video generation.',
+      'Metadata object containing video generation configuration parameters.',
   },
   {
-    name: 'last_frame',
-    type: 'string',
-    descriptionKey:
-      'URL of the last frame image for video generation.',
-  },
-]
-
-const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
-  {
-    name: 'duration',
-    type: 'integer',
-    descriptionKey:
-      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,12]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
-  },
-  {
-    name: 'seed',
-    type: 'integer',
-    defaultValue: -1,
-    range: '-1 ~ 2^32-1',
-    descriptionKey:
-      'Seed integer for controlling randomness of generated content. Value range: [-1, 2^32-1]',
-  },
-  {
-    name: 'ratio',
-    type: 'string',
-    enumValues: ['16:9', '4:3', '1:1', '3:4', '9:16', '21:9', 'adaptive'],
-    descriptionKey:
-      'Aspect ratio of the generated video (Seedance 2.0). Enum values: 16:9, 4:3, 1:1, 3:4, 9:16, 21:9, adaptive',
-  },
-  {
-    name: 'resolution',
+    name: 'metadata.resolution',
     type: 'string',
     defaultValue: '720p',
     enumValues: ['480p', '720p', '1080p'],
@@ -915,13 +863,177 @@ const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
       'Video resolution (Seedance 2.0). Enum values: 480p, 720p, 1080p',
   },
   {
-    name: 'frames',
+    name: 'metadata.ratio',
+    type: 'string',
+    required: true,
+    enumValues: ['16:9', '9:16', '1:1', '4:3', '3:4'],
+    descriptionKey:
+      'Video aspect ratio. Supported values: 16:9, 9:16, 1:1, 4:3, 3:4.',
+  },
+  {
+    name: 'metadata.generate_audio',
+    type: 'boolean',
+    required: true,
+    descriptionKey:
+      'Whether to generate the final advertisement audio (background music + voiceover).',
+  },
+  {
+    name: 'metadata.watermark',
+    type: 'boolean',
+    required: true,
+    defaultValue: 'false',
+    descriptionKey: 'Whether to add platform watermark.',
+  },
+  {
+    name: 'metadata.return_last_frame',
+    type: 'boolean',
+    descriptionKey:
+      'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more',
+  },
+  {
+    name: 'videos',
+    type: 'array',
+    descriptionKey:
+      'Array of video URLs. Provide reference video materials for the model.',
+  },
+  {
+    name: 'audios',
+    type: 'array',
+    descriptionKey:
+      'Array of audio URLs. Provide reference audio materials for the model.',
+  },
+  {
+    name: 'images',
+    type: 'array',
+    descriptionKey:
+      'Array of image URLs. Provide reference image materials for the model.',
+  },
+  // {
+  //   name: 'content',
+  //   type: 'array',
+  //   required: true,
+  //   descriptionKey:
+  //     'Array of video content elements. Each element represents a text, image, video or audio reference.',
+  // },
+  // {
+  //   name: 'return_last_frame',
+  //   type: 'boolean',
+  //   descriptionKey:
+  //     'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more',
+  // },
+  // {
+  //   name: 'resolution',
+  //   type: 'string',
+  //   enumValues: ['480p', '720p', '1080p'],
+  //   descriptionKey:
+  //     'Output video resolution. Available values: 480p, 720p, 1080p.',
+  // },
+]
+
+const JD_TEXT_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
+  {
+    name: 'model',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Model name',
+  },
+  {
+    name: 'prompt',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Prompt text',
+  },
+  {
+    name: 'duration',
+    type: 'integer',
+    range: '4 ~ 12',
+    descriptionKey:
+      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,12]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
+  },
+  {
+    name: 'metadata',
+    type: 'object',
+    descriptionKey:
+      'Metadata object containing video generation configuration parameters.',
+  },
+]
+
+const JD_IMAGE_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
+  {
+    name: 'model',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Model name',
+  },
+  {
+    name: 'prompt',
+    type: 'string',
+    required: true,
+    descriptionKey: 'Prompt text',
+  },
+   {
+    name: 'duration',
+    type: 'integer',
+    range: '4 ~ 12',
+    descriptionKey:
+      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,12]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
+  },
+  {
+    name: 'metadata',
+    type: 'object',
+    descriptionKey:
+      'Metadata object containing video generation configuration parameters.',
+  },
+]
+
+const JD_IMAGE_TO_VIDEO_BODY_PARAMS2: SupportedParameter[] = [
+  {
+    name: 'metadata.first_frame',
+    type: 'string',
+    descriptionKey:
+      'URL of the first frame image for video generation.',
+  },
+  {
+    name: 'metadata.last_frame',
+    type: 'string',
+    descriptionKey:
+      'URL of the last frame image for video generation.',
+  },
+]
+
+const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
+  
+  {
+    name: 'metadata.seed',
+    type: 'integer',
+    defaultValue: -1,
+    range: '-1 ~ 2^32-1',
+    descriptionKey:
+      'Seed integer for controlling randomness of generated content. Value range: [-1, 2^32-1]',
+  },
+  {
+    name: 'metadata.ratio',
+    type: 'string',
+    enumValues: ['16:9', '4:3', '1:1', '3:4', '9:16', '21:9', 'adaptive'],
+    descriptionKey:
+      'Aspect ratio of the generated video (Seedance 2.0). Enum values: 16:9, 4:3, 1:1, 3:4, 9:16, 21:9, adaptive',
+  },
+  {
+    name: 'metadata.resolution',
+    type: 'string',
+    defaultValue: '720p',
+    enumValues: ['480p', '720p', '1080p'],
+    descriptionKey:
+      'Video resolution (Seedance 2.0). Enum values: 480p, 720p, 1080p',
+  },
+  {
+    name: 'metadata.frames',
     type: 'integer',
     descriptionKey:
       'Number of frames for the generated video (Seedance 2.0 & Seedance 1.5 pro not yet supported). Control video length flexibly through frames, supports decimal seconds. Formula: frames = duration × frame_rate(24). Value range: [29, 289] satisfying 25+4n format.',
   },
   {
-    name: 'camera_fixed',
+    name: 'metadata.camera_fixed',
     type: 'boolean',
     defaultValue: false,
     enumValues: ['true', 'false'],
@@ -929,21 +1041,21 @@ const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
       'Whether to fix the camera (Seedance 2.0 not yet supported). Enum values: true (fixed camera), false (not fixed)',
   },
   {
-    name: 'generate_audio',
+    name: 'metadata.generate_audio',
     type: 'boolean',
     defaultValue: true,
     descriptionKey:
       'Control whether the generated video contains synchronized audio (Seedance 2.0 & Seedance 1.5 pro only). true: includes synchronized audio, false: silent video',
   },
   {
-    name: 'draft',
+    name: 'metadata.draft',
     type: 'boolean',
     defaultValue: false,
     descriptionKey:
       'Draft mode switch (Seedance 1.5 pro only). true: enable draft mode, generate preview video, consume fewer tokens. false: disable draft mode, generate normal video. Note: after enabling draft mode, use 480p resolution.',
   },
   {
-    name: 'service_tier',
+    name: 'metadata.service_tier',
     type: 'string',
     defaultValue: 'default',
     enumValues: ['default', 'flex'],
@@ -951,7 +1063,7 @@ const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
       'Service tier type (Seedance 1.5 pro only). default: online inference mode, lower RPM and concurrency quota. flex: offline inference mode, higher TPD quota.',
   },
   {
-    name: 'execution_expires_after',
+    name: 'metadata.execution_expires_after',
     type: 'integer',
     defaultValue: 172800,
     range: '3600 ~ 259200',
@@ -959,7 +1071,7 @@ const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
       'Task timeout threshold in seconds (Seedance 1.5 pro only). Unit: seconds, calculated from creation time. Value range: [3600, 259200]. Default: 172800 (48 hours).',
   },
   {
-    name: 'watermark',
+    name: 'metadata.watermark',
     type: 'boolean',
     defaultValue: false,
     enumValues: ['false', 'true'],
@@ -967,7 +1079,7 @@ const JD_TEXT_TO_VIDEO_PARAMS_PARAMS: SupportedParameter[] = [
       'Whether the generated video contains a watermark. Enum values: false (no watermark), true (with watermark)',
   },
   {
-    name: 'tools',
+    name: 'metadata.tools',
     type: 'array',
     descriptionKey:
       'Tools for the model to call (Seedance 2.0 only). type: tool type (web_search for internet search). After enabling, the model can autonomously search internet content based on prompts.',

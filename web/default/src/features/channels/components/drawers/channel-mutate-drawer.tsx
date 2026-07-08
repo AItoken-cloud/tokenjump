@@ -2670,7 +2670,7 @@ export function ChannelMutateDrawer({
                                       { value: 1, label: t('JD Multi-modal Video') },
                                       { value: 2, label: t('JD Text to Video') },
                                       { value: 3, label: t('JD Image to Video') },
-                                      { value: 4, label: t('JD Multi-modal Fast') },
+                                      { value: 4, label: t('JD Multi-modal') },
                                     ].map(({ value, label }) => (
                                       <label
                                         key={value}
