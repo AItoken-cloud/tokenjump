@@ -528,6 +528,7 @@ func updateVideoSingleTask(ctx context.Context, adaptor TaskPollingAdaptor, ch *
 		}
 	case model.TaskStatusSuccess:
 		task.Progress = taskcommon.ProgressComplete
+		task.TotalTokens = taskResult.TotalTokens
 		if task.FinishTime == 0 {
 			task.FinishTime = now
 		}
@@ -555,6 +556,19 @@ func updateVideoSingleTask(ctx context.Context, adaptor TaskPollingAdaptor, ch *
 		if quota != 0 {
 			shouldRefund = true
 		}
+	case model.TaskStatusCancel, model.TaskStatusExpired:
+		logger.LogJson(ctx, fmt.Sprintf("Task %s %s", taskId, taskResult.Status), task)
+		task.Status = model.TaskStatus(taskResult.Status)
+		task.Progress = taskcommon.ProgressComplete
+		if task.FinishTime == 0 {
+			task.FinishTime = now
+		}
+		task.FailReason = taskResult.Reason
+		logger.LogInfo(ctx, fmt.Sprintf("Task %s %s: %s", task.TaskID, taskResult.Status, task.FailReason))
+		taskResult.Progress = taskcommon.ProgressComplete
+		if quota != 0 {
+			shouldRefund = true
+		}
 	default:
 		return fmt.Errorf("unknown task status %s for task %s", taskResult.Status, task.TaskID)
 	}
@@ -562,7 +576,7 @@ func updateVideoSingleTask(ctx context.Context, adaptor TaskPollingAdaptor, ch *
 		task.Progress = taskResult.Progress
 	}
 
-	isDone := task.Status == model.TaskStatusSuccess || task.Status == model.TaskStatusFailure
+	isDone := task.Status == model.TaskStatusSuccess || task.Status == model.TaskStatusFailure || task.Status == model.TaskStatusCancel || task.Status == model.TaskStatusExpired
 	if isDone && snap.Status != task.Status {
 		won, err := task.UpdateWithStatus(snap.Status)
 		if err != nil {
