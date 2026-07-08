@@ -32,7 +32,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command'
 import { useSearch } from '@/context/search-provider'
-import { useTheme } from '@/context/theme-provider'
+// import { useTheme } from '@/context/theme-provider'
 import { useSidebarData } from '@/hooks/use-sidebar-data'
 
 import { getNavGroupsForPath } from './layout/lib/sidebar-view-registry'
@@ -41,7 +41,7 @@ import { ScrollArea } from './ui/scroll-area'
 export function CommandMenu() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { setTheme } = useTheme()
+  // const { setTheme } = useTheme()
   const { open, setOpen } = useSearch()
   const { pathname } = useLocation()
   const sidebarData = useSidebarData()
@@ -102,7 +102,7 @@ export function CommandMenu() {
               </CommandGroup>
             ))}
             <CommandSeparator />
-            <CommandGroup heading='Theme'>
+            {/* <CommandGroup heading='Theme'>
               <CommandItem onSelect={() => runCommand(() => setTheme('light'))}>
                 <Sun /> <span>{t('Light')}</span>
               </CommandItem>
@@ -116,7 +116,7 @@ export function CommandMenu() {
                 <Laptop />
                 <span>{t('System')}</span>
               </CommandItem>
-            </CommandGroup>
+            </CommandGroup> */}
           </ScrollArea>
         </CommandList>
       </Command>

@@ -2665,50 +2665,28 @@ export function ChannelMutateDrawer({
                                 <FormItem className='space-y-3'>
                                   <FormLabel>{t('Custom Adaptor')}</FormLabel>
                                   <div className='flex flex-col gap-2'>
-                                    <label className='flex cursor-pointer items-center gap-2'>
-                                      <input
-                                        type='radio'
-                                        name='custom_adaptor_id'
-                                        value='0'
-                                        checked={field.value === 0}
-                                        onChange={() => field.onChange(0)}
-                                        className='accent-primary'
-                                      />
-                                      <span className='text-sm'>{t('None')}</span>
-                                    </label>
-                                    <label className='flex cursor-pointer items-center gap-2'>
-                                      <input
-                                        type='radio'
-                                        name='custom_adaptor_id'
-                                        value='1'
-                                        checked={field.value === 1}
-                                        onChange={() => field.onChange(1)}
-                                        className='accent-primary'
-                                      />
-                                      <span className='text-sm'>{t('JD Multi-modal Video')}</span>
-                                    </label>
-                                    <label className='flex cursor-pointer items-center gap-2'>
-                                      <input
-                                        type='radio'
-                                        name='custom_adaptor_id'
-                                        value='2'
-                                        checked={field.value === 2}
-                                        onChange={() => field.onChange(2)}
-                                        className='accent-primary'
-                                      />
-                                      <span className='text-sm'>{t('JD Text to Video')}</span>
-                                    </label>
-                                    <label className='flex cursor-pointer items-center gap-2'>
-                                      <input
-                                        type='radio'
-                                        name='custom_adaptor_id'
-                                        value='3'
-                                        checked={field.value === 3}
-                                        onChange={() => field.onChange(3)}
-                                        className='accent-primary'
-                                      />
-                                      <span className='text-sm'>{t('JD Image to Video')}</span>
-                                    </label>
+                                    {[
+                                      { value: 0, label: t('None') },
+                                      { value: 1, label: t('JD Multi-modal Video') },
+                                      { value: 2, label: t('JD Text to Video') },
+                                      { value: 3, label: t('JD Image to Video') },
+                                      { value: 4, label: t('JD Multi-modal Fast') },
+                                    ].map(({ value, label }) => (
+                                      <label
+                                        key={value}
+                                        className='flex cursor-pointer items-center gap-2'
+                                      >
+                                        <input
+                                          type='radio'
+                                          name='custom_adaptor_id'
+                                          value={value}
+                                          checked={field.value === value}
+                                          onChange={() => field.onChange(value)}
+                                          className='accent-primary'
+                                        />
+                                        <span className='text-sm'>{label}</span>
+                                      </label>
+                                    ))}
                                   </div>
                                   <FormMessage />
                                 </FormItem>

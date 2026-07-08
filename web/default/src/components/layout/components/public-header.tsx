@@ -24,7 +24,7 @@ import { Dialog } from '@/components/dialog'
 import { LanguageSwitcher } from '@/components/language-switcher'
 import { NotificationPopover } from '@/components/notification-popover'
 import { ProfileDropdown } from '@/components/profile-dropdown'
-import { ThemeSwitch } from '@/components/theme-switch'
+// import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNotifications } from '@/hooks/use-notifications'
@@ -263,7 +263,7 @@ export function PublicHeader(props: PublicHeaderProps) {
               )}
 
               {showLanguageSwitcher && <LanguageSwitcher />}
-              {showThemeSwitch && <ThemeSwitch />}
+              {/* {showThemeSwitch && <ThemeSwitch />} */}
               {showNotifications && (
                 <NotificationPopover
                   open={notifications.popoverOpen}
@@ -299,7 +299,7 @@ export function PublicHeader(props: PublicHeaderProps) {
 
             {/* Mobile: compact actions + hamburger */}
             <div className='flex items-center gap-2 sm:hidden'>
-              {showThemeSwitch && <ThemeSwitch />}
+              {/* {showThemeSwitch && <ThemeSwitch />} */}
               {showAuthButtons && !loading && isAuthenticated && (
                 <ProfileDropdown />
               )}

@@ -97,8 +97,8 @@ export function filterByEndpointType(
     const isVideoAdapter =
       m.custom_adapter_id != null &&
       m.custom_adapter_id >= 1 &&
-      m.custom_adapter_id <= 3
-    // custom_adapter_id 1/2/3 belong ONLY to video category
+      m.custom_adapter_id <= 4
+    // custom_adapter_id 1/2/3/4 belong ONLY to video category
     if (isVideoAdapter) return endpointType === ENDPOINT_TYPES.OPENAI_VIDEO
     return m.supported_endpoint_types?.includes(endpointType) ?? false
   })

@@ -798,6 +798,57 @@ const JD_MULTIMODAL_VIDEO_PARAMS: SupportedParameter[] = [
   },
 ]
 
+// custom_adapter_id === 4: same as id=1 plus content, return_last_frame, resolution
+const JD_MULTIMODAL_VIDEO_FAST_PARAMS: SupportedParameter[] = [
+  {
+    name: 'content',
+    type: 'array',
+    required: true,
+    descriptionKey:
+      'Array of video content elements. Each element represents a text, image, video or audio reference.',
+  },
+  {
+    name: 'generate_audio',
+    type: 'boolean',
+    required: true,
+    descriptionKey:
+      'Whether to generate the final advertisement audio (background music + voiceover).',
+  },
+  {
+    name: 'ratio',
+    type: 'string',
+    required: true,
+    enumValues: ['16:9', '9:16', '1:1', '4:3', '3:4'],
+    descriptionKey:
+      'Video aspect ratio. Supported values: 16:9, 9:16, 1:1, 4:3, 3:4.',
+  },
+  {
+    name: 'duration',
+    type: 'integer',
+    required: true,
+    descriptionKey: 'Total video duration in seconds.',
+  },
+  {
+    name: 'watermark',
+    type: 'boolean',
+    required: true,
+    descriptionKey: 'Whether to add platform watermark.',
+  },
+  {
+    name: 'return_last_frame',
+    type: 'boolean',
+    descriptionKey:
+      'Whether to return the last frame image of the generated video. true: returns a PNG format last frame image, which can be used as the first frame of the next video task; f... See more',
+  },
+  {
+    name: 'resolution',
+    type: 'string',
+    enumValues: ['480p', '720p', '1080p'],
+    descriptionKey:
+      'Output video resolution. Available values: 480p, 720p, 1080p.',
+  },
+]
+
 const JD_TEXT_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
   // {
   //   name: 'model',
@@ -932,11 +983,11 @@ type ApiCategory = 'reasoning' | 'embedding' | 'image' | 'video' | 'chat'
  * need to distinguish them so the request-parameter table is accurate.
  */
 function apiCategoryOf(model: PricingModel): ApiCategory {
-  // custom_adapter_id 1/2/3 are all video generation adapters
+  // custom_adapter_id 1/2/3/4 are all video generation adapters
   if (
     model.custom_adapter_id != null &&
     model.custom_adapter_id >= 1 &&
-    model.custom_adapter_id <= 3
+    model.custom_adapter_id <= 4
   ) {
     return 'video'
   }
@@ -959,6 +1010,7 @@ export function buildSupportedParameters(
   model: PricingModel
 ): SupportedParameter[] {
   if (model.custom_adapter_id === 1) return JD_MULTIMODAL_VIDEO_PARAMS
+  if (model.custom_adapter_id === 4) return JD_MULTIMODAL_VIDEO_FAST_PARAMS
   if (model.custom_adapter_id === 2)
     return [...JD_TEXT_TO_VIDEO_BODY_PARAMS, ...JD_TEXT_TO_VIDEO_PARAMS_PARAMS]
   if (model.custom_adapter_id === 3)

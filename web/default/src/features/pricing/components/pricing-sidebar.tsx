@@ -244,8 +244,8 @@ export function PricingSidebar(props: PricingSidebarProps) {
             const isVideoAdapter =
               model.custom_adapter_id != null &&
               model.custom_adapter_id >= 1 &&
-              model.custom_adapter_id <= 3
-            // custom_adapter_id 1/2/3 belong ONLY to video category
+              model.custom_adapter_id <= 4
+            // custom_adapter_id 1/2/3/4 belong ONLY to video category
             if (isVideoAdapter) return value === ENDPOINT_TYPES.OPENAI_VIDEO
             return model.supported_endpoint_types?.includes(value) ?? false
           }

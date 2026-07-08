@@ -561,10 +561,25 @@ function CodeSamplesSection(props: {
       },
     }
 
+    const body4 = {
+      model: 'Doubao-Seedance-2.0-Fast',
+      prompt: 'Your prompt',
+      duration: 2,
+      metadata: {
+        ratio: '16:9',
+        generate_audio: false,
+        watermark: false,
+      },
+      videos: ['https://www.w3schools.com/html/movie.mp4'],
+      audios: ['https://filesamples.com/samples/audio/mp3/sample4.mp3',],
+      images: ['https://pics5.baidu.com/feed/023b5bb5c9ea15ce24be2ffd5e505efc3b87b256.jpeg@f_auto?token=f9168e7292671489b3f21931617d5d63',],
+    }
+
     const bodyMap: Record<number, object> = {
       1: body1,
       2: body2,
       3: body3,
+      4: body4,
     }
 
     if (lang === 'curl' && bodyMap[customAdaptorId]) {
