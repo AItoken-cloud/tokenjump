@@ -779,9 +779,9 @@ const JD_MULTIMODAL_VIDEO_PARAMS: SupportedParameter[] = [
   {
     name: 'duration',
     type: 'integer',
-    range: '4 ~ 12',
+    range: '4 ~ 15',
     descriptionKey:
-      'Video duration in seconds. Supports integers in [4,12]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
+      'Video duration in seconds. Supports integers in [4,15]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
   },
   {
     name: 'metadata',
@@ -844,9 +844,9 @@ const JD_MULTIMODAL_VIDEO_FAST_PARAMS: SupportedParameter[] = [
   {
     name: 'duration',
     type: 'integer',
-    range: '4 ~ 12',
+    range: '4 ~ 15',
     descriptionKey:
-      'Video duration in seconds. Supports integers in [4,12]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
+      'Video duration in seconds. Supports integers in [4,15]. Set to -1 for automatic selection. Note: duration is related to billing, please set carefully.',
   },
   {
     name: 'metadata',
@@ -946,9 +946,9 @@ const JD_TEXT_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
   {
     name: 'duration',
     type: 'integer',
-    range: '4 ~ 12',
+    range: '4 ~ 15',
     descriptionKey:
-      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,12]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
+      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,15]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
   },
   {
     name: 'metadata',
@@ -974,9 +974,9 @@ const JD_IMAGE_TO_VIDEO_BODY_PARAMS: SupportedParameter[] = [
    {
     name: 'duration',
     type: 'integer',
-    range: '4 ~ 12',
+    range: '4 ~ 15',
     descriptionKey:
-      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,12]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
+      'Video duration in seconds. Seedance 1.5 pro: supports integers in [4,15]. Set to -1 for automatic selection. duration and frames are mutually exclusive, frames has higher priority.',
   },
   {
     name: 'metadata',
