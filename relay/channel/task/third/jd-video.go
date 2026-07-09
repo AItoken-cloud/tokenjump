@@ -34,11 +34,11 @@ func CheckRatio(ratio *dto.StringValue) error {
 }
 
 // 生成视频时长，单位：秒
-// - 支持 [4,12] 范围内的整数
+// - 支持 [4,15] 范围内的整数
 // - 设置为 -1 表示由模型自主选择
 func CheckDuration(duration *dto.IntValue) error {
-	if duration != nil && *duration != -1 && (*duration < 4 || *duration > 12) {
-		return errors.New("duration must be -1 or between 4 and 12 seconds")
+	if duration != nil && *duration != -1 && (*duration < 4 || *duration > 15) {
+		return errors.New("duration must be -1 or between 4 and 15 seconds")
 	}
 	return nil
 }
