@@ -129,7 +129,6 @@ jobs:
       - name: Sign manifests with cosign
         run: |
           cosign sign --yes crpi-evsgwuujr0ij72w8.cn-hangzhou.personal.cr.aliyuncs.com/token_api/nexus_api:${TAG}
-          cosign sign --yes crpi-evsgwuujr0ij72w8.cn-hangzhou.personal.cr.aliyuncs.com/token_api/nexus_api:latest
 
       - name: Manifest summary
         run: |
